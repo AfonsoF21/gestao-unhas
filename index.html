@@ -269,7 +269,10 @@
                 horasMes += (4 / c.frequencia) * c.duracao;
                 selA.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
                 selF.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
-                tbodyC.innerHTML += `<tr><td><b>${c.nome}</b></td><td>${c.telefone || '-'}</td><td><button class="btn-accent btn-small" onclick="carregarParaEdicao('${c.id}')">Editar</button></td></tr>`;
+                
+                const linkWpp = c.telefone ? `<a href="https://wa.me/351${c.telefone.replace(/\s/g, '')}" target="_blank" class="btn-whatsapp btn-small" style="text-decoration:none; display:inline-block;">📱 WhatsApp</a>` : '';
+                
+                tbodyC.innerHTML += `<tr><td><b>${c.nome}</b></td><td>${c.telefone || '-'}</td><td>${linkWpp}<button class="btn-accent btn-small" onclick="carregarParaEdicao('${c.id}')">Editar</button><button class="btn-danger btn-small" onclick="apagarCliente('${c.id}')">Apagar</button></td></tr>`;
             });
 
             const totalHoras = config.horas_dia * config.dias_semana * 4;
@@ -287,7 +290,8 @@
             const tbody = document.getElementById('tabela-agenda');
             tbody.innerHTML = '';
             agendaDB.filter(a => a.dia === dia).sort((x,y) => x.hora.localeCompare(y.hora)).forEach(m => {
-                tbody.innerHTML += `<tr><td>${m.hora}</td><td>${m.nome_snapshot}</td><td>${m.servico || '-'}</td><td>${m.telefone_snapshot || '-'}</td><td><button class="btn-danger btn-small" onclick="apagarAgenda('${m.id}')">Remover</button></td></tr>`;
+                const linkWpp = m.telefone_snapshot ? `<a href="https://wa.me/351${m.telefone_snapshot.replace(/\s/g, '')}" target="_blank" class="btn-whatsapp btn-small" style="text-decoration:none; display:inline-block;">📱 WhatsApp</a>` : '';
+                tbody.innerHTML += `<tr><td>${m.hora}</td><td>${m.nome_snapshot}</td><td>${m.servico || '-'}</td><td>${m.telefone_snapshot || '-'}</td><td>${linkWpp}<button class="btn-danger btn-small" onclick="apagarAgenda('${m.id}')">Remover</button></td></tr>`;
             });
         }
 
@@ -310,6 +314,13 @@
             if(idEmEdicao) await supabaseDB.from('clientes').update({nome:n, telefone:t, frequencia:f, duracao:d}).eq('id', idEmEdicao);
             else await supabaseDB.from('clientes').insert([{nome:n, telefone:t, frequencia:f, duracao:d}]);
             cancelarEdicao(); sincronizarComServidor();
+        }
+
+        async function apagarCliente(id) {
+            if(!confirm("Tens a certeza que queres apagar este cliente?")) return;
+            mostrarLoading(true);
+            await supabaseDB.from('clientes').delete().eq('id', id);
+            sincronizarComServidor();
         }
 
         function carregarParaEdicao(id) {
@@ -368,5 +379,3 @@
     </script>
 </body>
 </html>
-
-
