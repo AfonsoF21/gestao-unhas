@@ -114,7 +114,8 @@
             <div class="menu-item active" onclick="mudarAba('dashboard', this)">📊 Dashboard</div>
             <div class="menu-item" onclick="mudarAba('agenda', this)">📅 Agenda</div>
             <div class="menu-item" onclick="mudarAba('clientes', this)">👥 Clientes</div>
-            <div class="menu-item" onclick="mudarAba('faturacao', this)">💰 Faturação</div>
+            <div class="menu-item" onclick="mudarAba('precos-tab', this)">💰 Preços</div>
+            <div class="menu-item" onclick="mudarAba('faturacao', this)">💶 Faturação</div>
             <div class="menu-item" onclick="mudarAba('config', this)">⚙️ Config</div>
         </div>
 
@@ -139,15 +140,11 @@
                     <input type="date" id="input-data-agenda" onchange="renderAgenda()" style="margin-bottom: 20px;">
                     <div class="form-row">
                         <div class="form-group" style="flex:2;"><label>Cliente</label><select id="select-cliente-agenda"></select></div>
-                        <div class="form-group" style="flex:1.5;"><label>Serviço</label>
-                            <select id="select-servico-agenda">
-                                <option value="Mãos">Mãos</option>
-                                <option value="Pés">Pés</option>
-                                <option value="Mãos e Pés">Mãos e Pés</option>
-                            </select>
+                        <div class="form-group" style="flex:1.5;"><label>Serviço (Preço Automático)</label>
+                            <select id="select-servico-agenda"></select>
                         </div>
                         <div class="form-group" style="flex:1;"><label>Hora</label><input type="time" id="input-hora-agenda"></div>
-                        <button class="btn-primary" onclick="addAgenda()">Agendar</button>
+                        <button class="btn-primary" onclick="addAgenda()">Agendar + Faturar</button>
                     </div>
                     <div class="table-responsive">
                         <table>
@@ -178,6 +175,23 @@
                 </div>
             </div>
 
+            <div id="precos-tab" class="section">
+                <h1>Definição de Preços</h1>
+                <div class="panel">
+                    <div class="form-row">
+                        <div class="form-group" style="flex:2;"><label>Nome do Serviço</label><input type="text" id="novo-servico-nome" placeholder="Ex: Manicure"></div>
+                        <div class="form-group" style="flex:1;"><label>Preço (€)</label><input type="number" id="novo-servico-preco" step="0.5"></div>
+                        <button class="btn-success" onclick="salvarServico()">Guardar Serviço</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead><tr><th>Serviço</th><th>Preço</th><th>Ações</th></tr></thead>
+                            <tbody id="tabela-precos"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <div id="faturacao" class="section">
                 <h1>Faturação</h1>
                 <div class="panel">
@@ -185,14 +199,9 @@
                         <input type="month" id="input-mes" onchange="renderFaturacao()">
                         <div style="text-align:right;">Total: <span class="faturacao-total" id="total-faturado-mes">0.00 €</span></div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group" style="flex:2;"><label>Cliente</label><select id="select-cliente-faturacao"></select></div>
-                        <div class="form-group" style="flex:1;"><label>Valor (€)</label><input type="number" id="input-preco-faturacao" step="0.5"></div>
-                        <button class="btn-success" onclick="addFaturacao()">Registar</button>
-                    </div>
                     <div class="table-responsive">
                         <table>
-                            <thead><tr><th>Cliente</th><th>Valor</th><th>Ações</th></tr></thead>
+                            <thead><tr><th>Cliente</th><th>Serviço</th><th>Valor</th><th>Ações</th></tr></thead>
                             <tbody id="tabela-faturacao"></tbody>
                         </table>
                     </div>
@@ -218,7 +227,7 @@
         const SUPABASE_KEY = "sb_publishable_3fQhn8sBTNDXEjpk3SAPXQ_UddrAIH6";
         const supabaseDB = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        let clientes = [], faturacaoDB = [], agendaDB = [], idEmEdicao = null;
+        let clientes = [], faturacaoDB = [], agendaDB = [], servicosDB = [], idEmEdicao = null, idServicoEdicao = null;
         let config = { id: 1, horas_dia: 8, dias_semana: 5 };
 
         window.onload = async function() {
@@ -241,18 +250,19 @@
         }
 
         async function fazerLogout() { await supabaseDB.auth.signOut(); window.location.reload(); }
-
         function mostrarLoading(m) { document.getElementById('loading-screen').style.display = m ? 'flex' : 'none'; }
 
         async function sincronizarComServidor() {
             mostrarLoading(true);
-            const [resC, resF, resA, resConf] = await Promise.all([
+            const [resC, resF, resA, resConf, resS] = await Promise.all([
                 supabaseDB.from('clientes').select('*').order('nome'),
                 supabaseDB.from('faturacao').select('*'),
                 supabaseDB.from('agenda').select('*'),
-                supabaseDB.from('config').select('*').eq('id', 1).single()
+                supabaseDB.from('config').select('*').eq('id', 1).single(),
+                supabaseDB.from('servicos').select('*').order('nome')
             ]);
             clientes = resC.data || []; faturacaoDB = resF.data || []; agendaDB = resA.data || [];
+            servicosDB = resS.data || [];
             if(resConf.data) config = resConf.data;
             renderTudo();
             mostrarLoading(false);
@@ -262,26 +272,21 @@
             const tbodyC = document.getElementById('tabela-clientes');
             tbodyC.innerHTML = ''; let horasMes = 0;
             const selA = document.getElementById('select-cliente-agenda');
-            const selF = document.getElementById('select-cliente-faturacao');
-            selA.innerHTML = selF.innerHTML = '<option value="">-- Selecionar --</option>';
+            const selS = document.getElementById('select-servico-agenda');
+            selA.innerHTML = '<option value="">-- Selecionar Cliente --</option>';
+            selS.innerHTML = '<option value="">-- Selecionar Serviço --</option>';
 
             clientes.forEach(c => {
                 horasMes += (4 / c.frequencia) * c.duracao;
                 selA.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
-                selF.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
-                
-                tbodyC.innerHTML += `<tr>
-                    <td><b>${c.nome}</b></td>
-                    <td>${c.telefone || '-'}</td>
-                    <td>${c.frequencia} sem.</td>
-                    <td>${c.duracao}h</td>
-                    <td>
-                        <button class="btn-accent btn-small" onclick="carregarParaEdicao('${c.id}')">Editar</button>
-                        <button class="btn-danger btn-small" onclick="apagarCliente('${c.id}')">Apagar</button>
-                    </td>
-                </tr>`;
+                tbodyC.innerHTML += `<tr><td><b>${c.nome}</b></td><td>${c.telefone || '-'}</td><td>${c.frequencia} sem.</td><td>${c.duracao}h</td><td><button class="btn-accent btn-small" onclick="carregarParaEdicao('${c.id}')">Editar</button><button class="btn-danger btn-small" onclick="apagarCliente('${c.id}')">Apagar</button></td></tr>`;
             });
 
+            servicosDB.forEach(s => {
+                selS.innerHTML += `<option value="${s.nome}" data-preco="${s.preco}">${s.nome} (${s.preco}€)</option>`;
+            });
+
+            renderPrecos();
             const totalHoras = config.horas_dia * config.dias_semana * 4;
             document.getElementById('dash-total-clientes').innerText = clientes.length;
             document.getElementById('dash-horas-ocupadas').innerText = horasMes.toFixed(1) + 'h';
@@ -292,45 +297,84 @@
             renderAgenda(); renderFaturacao();
         }
 
-        function renderAgenda() {
-    const dia = document.getElementById('input-data-agenda').value;
-    const tbody = document.getElementById('tabela-agenda');
-    tbody.innerHTML = '';
-    
-    // Formata a data para DD/MM (ex: 25/02)
-    const dataFormatada = dia.split('-').reverse().slice(0,2).join('/');
+        function renderPrecos() {
+            const tbody = document.getElementById('tabela-precos');
+            tbody.innerHTML = '';
+            servicosDB.forEach(s => {
+                tbody.innerHTML += `<tr><td>${s.nome}</td><td>${s.preco.toFixed(2)} €</td><td><button class="btn-accent btn-small" onclick="carregarServicoEdicao('${s.id}')">Editar</button><button class="btn-danger btn-small" onclick="apagarServico('${s.id}')">X</button></td></tr>`;
+            });
+        }
 
-    agendaDB.filter(a => a.dia === dia).sort((x,y) => x.hora.localeCompare(y.hora)).forEach(m => {
-        // Remove espaços do número para o link não quebrar
-        const numLimpo = m.telefone_snapshot ? m.telefone_snapshot.replace(/\s/g, '') : '';
-        
-        // Texto da mensagem
-        const textoChat = `Alô ${m.nome_snapshot}, envio mensagem para recordar a marcação de dia ${dataFormatada} às ${m.hora}. Agradeço confirmação. Beijinho! ✨`;
-        
-        // Link usando o formato oficial wa.me com a mensagem encodada
-        const linkWpp = numLimpo ? `<a href="https://wa.me/351${numLimpo}?text=${encodeURIComponent(textoChat)}" target="_blank" class="btn-whatsapp btn-small" style="text-decoration:none; display:inline-block;">📱 WhatsApp</a>` : '';
-        
-        tbody.innerHTML += `<tr>
-            <td>${m.hora}</td>
-            <td>${m.nome_snapshot}</td>
-            <td>${m.servico || '-'}</td>
-            <td>${m.telefone_snapshot || '-'}</td>
-            <td>
-                ${linkWpp}
-                <button class="btn-danger btn-small" onclick="apagarAgenda('${m.id}')">Remover</button>
-            </td>
-        </tr>`;
-    });
-}
+        async function salvarServico() {
+            const n = document.getElementById('novo-servico-nome').value, p = parseFloat(document.getElementById('novo-servico-preco').value);
+            if(!n || isNaN(p)) return;
+            mostrarLoading(true);
+            if(idServicoEdicao) await supabaseDB.from('servicos').update({nome:n, preco:p}).eq('id', idServicoEdicao);
+            else await supabaseDB.from('servicos').insert([{nome:n, preco:p}]);
+            idServicoEdicao = null;
+            document.getElementById('novo-servico-nome').value = ''; document.getElementById('novo-servico-preco').value = '';
+            sincronizarComServidor();
+        }
+
+        function carregarServicoEdicao(id) {
+            const s = servicosDB.find(x => x.id == id);
+            document.getElementById('novo-servico-nome').value = s.nome;
+            document.getElementById('novo-servico-preco').value = s.preco;
+            idServicoEdicao = id;
+        }
+
+        async function apagarServico(id) { if(confirm("Apagar serviço?")) { await supabaseDB.from('servicos').delete().eq('id', id); sincronizarComServidor(); } }
+
+        function renderAgenda() {
+            const dia = document.getElementById('input-data-agenda').value;
+            const tbody = document.getElementById('tabela-agenda');
+            tbody.innerHTML = '';
+            const dataFormatada = dia.split('-').reverse().slice(0,2).join('/');
+            agendaDB.filter(a => a.dia === dia).sort((x,y) => x.hora.localeCompare(y.hora)).forEach(m => {
+                const numLimpo = m.telefone_snapshot ? m.telefone_snapshot.replace(/\s/g, '') : '';
+                const textoChat = `Alô ${m.nome_snapshot}, envio mensagem para recordar a marcação de dia ${dataFormatada} às ${m.hora}. Agradeço confirmação. Beijinho! ✨`;
+                const linkWpp = numLimpo ? `<a href="https://wa.me/351${numLimpo}?text=${encodeURIComponent(textoChat)}" target="_blank" class="btn-whatsapp btn-small" style="text-decoration:none; display:inline-block;">📱 WhatsApp</a>` : '';
+                tbody.innerHTML += `<tr><td>${m.hora}</td><td>${m.nome_snapshot}</td><td>${m.servico || '-'}</td><td>${m.telefone_snapshot || '-'}</td><td>${linkWpp}<button class="btn-danger btn-small" onclick="apagarAgenda('${m.id}')">Remover</button></td></tr>`;
+            });
+        }
+
         function renderFaturacao() {
             const mes = document.getElementById('input-mes').value;
             const tbody = document.getElementById('tabela-faturacao');
             tbody.innerHTML = ''; let total = 0;
             faturacaoDB.filter(f => f.mes === mes).forEach(r => {
                 total += r.preco;
-                tbody.innerHTML += `<tr><td>${r.nome_snapshot}</td><td>${r.preco.toFixed(2)} €</td><td><button class="btn-danger btn-small" onclick="apagarFaturacao('${r.id}')">X</button></td></tr>`;
+                tbody.innerHTML += `<tr><td>${r.nome_snapshot}</td><td>${r.servico_snapshot || '-'}</td><td>${r.preco.toFixed(2)} €</td><td><button class="btn-danger btn-small" onclick="apagarFaturacao('${r.id}')">X</button></td></tr>`;
             });
             document.getElementById('total-faturado-mes').innerText = total.toFixed(2) + ' €';
+        }
+
+        async function addAgenda() {
+            const d = document.getElementById('input-data-agenda').value;
+            const h = document.getElementById('input-hora-agenda').value;
+            const selS = document.getElementById('select-servico-agenda');
+            const sNome = selS.value;
+            const sPreco = parseFloat(selS.options[selS.selectedIndex].getAttribute('data-preco'));
+            const idC = document.getElementById('select-cliente-agenda').value;
+
+            if(!d || !h || !idC || !sNome) { alert("Preenche Cliente, Serviço e Hora!"); return; }
+            
+            mostrarLoading(true);
+            const c = clientes.find(x => x.id === idC);
+            const mesAtual = d.substring(0, 7);
+
+            // 1. Guardar na Agenda
+            const { data: agendaData, error: errA } = await supabaseDB.from('agenda').insert([{
+                dia:d, hora:h, servico:sNome, id_cliente:idC, nome_snapshot:c.nome, telefone_snapshot:c.telefone
+            }]);
+
+            // 2. Guardar na Faturação Automática
+            const { error: errF } = await supabaseDB.from('faturacao').insert([{
+                mes: mesAtual, preco: sPreco, id_cliente: idC, nome_snapshot: c.nome, servico_snapshot: sNome
+            }]);
+
+            if(!errA && !errF) { alert("Agendado e Faturado com sucesso!"); }
+            sincronizarComServidor();
         }
 
         async function salvarCliente() {
@@ -343,68 +387,21 @@
             cancelarEdicao(); sincronizarComServidor();
         }
 
-        async function apagarCliente(id) {
-            if(!confirm("Tens a certeza que queres apagar este cliente?")) return;
-            mostrarLoading(true);
-            await supabaseDB.from('clientes').delete().eq('id', id);
-            sincronizarComServidor();
+        async function apagarCliente(id) { if(confirm("Apagar cliente?")) { mostrarLoading(true); await supabaseDB.from('clientes').delete().eq('id', id); sincronizarComServidor(); } }
+        function carregarParaEdicao(id) { 
+            const c = clientes.find(x => x.id === id); 
+            document.getElementById('nome').value = c.nome; document.getElementById('telefone').value = c.telefone;
+            document.getElementById('frequencia').value = c.frequencia; document.getElementById('duracao').value = c.duracao;
+            idEmEdicao = id; document.getElementById('btn-cancelar-edicao').style.display = 'inline';
         }
-
-        function carregarParaEdicao(id) {
-            const c = clientes.find(x => x.id === id);
-            document.getElementById('nome').value = c.nome; 
-            document.getElementById('telefone').value = c.telefone;
-            document.getElementById('frequencia').value = c.frequencia;
-            document.getElementById('duracao').value = c.duracao;
-            idEmEdicao = id; 
-            document.getElementById('btn-cancelar-edicao').style.display = 'inline';
-        }
-
-        function cancelarEdicao() { 
-            idEmEdicao = null; 
-            document.getElementById('nome').value = ''; 
-            document.getElementById('telefone').value = '';
-            document.getElementById('frequencia').value = "4"; 
-            document.getElementById('duracao').value = "1";   
-            document.getElementById('btn-cancelar-edicao').style.display = 'none'; 
-        }
-
-        async function addAgenda() {
-            const d = document.getElementById('input-data-agenda').value;
-            const h = document.getElementById('input-hora-agenda').value;
-            const s = document.getElementById('select-servico-agenda').value;
-            const id = document.getElementById('select-cliente-agenda').value;
-            if(!d || !h || !id) return;
-            const c = clientes.find(x => x.id === id);
-            await supabaseDB.from('agenda').insert([{
-                dia:d, 
-                hora:h, 
-                servico:s, 
-                id_cliente:id, 
-                nome_snapshot:c.nome, 
-                telefone_snapshot:c.telefone
-            }]);
-            sincronizarComServidor();
-        }
-
+        function cancelarEdicao() { idEmEdicao = null; document.getElementById('nome').value = ''; document.getElementById('telefone').value = ''; document.getElementById('btn-cancelar-edicao').style.display = 'none'; }
         async function apagarAgenda(id) { await supabaseDB.from('agenda').delete().eq('id', id); sincronizarComServidor(); }
-
-        async function addFaturacao() {
-            const m = document.getElementById('input-mes').value, p = parseFloat(document.getElementById('input-preco-faturacao').value), id = document.getElementById('select-cliente-faturacao').value;
-            if(!m || isNaN(p) || !id) return;
-            const c = clientes.find(x => x.id === id);
-            await supabaseDB.from('faturacao').insert([{mes:m, preco:p, id_cliente:id, nome_snapshot:c.nome}]);
-            sincronizarComServidor();
-        }
-
         async function apagarFaturacao(id) { await supabaseDB.from('faturacao').delete().eq('id', id); sincronizarComServidor(); }
-
         async function salvarConfig() {
             const h = document.getElementById('config-horas-dia').value, d = document.getElementById('config-dias-semana').value;
             await supabaseDB.from('config').update({horas_dia:h, dias_semana:d}).eq('id', 1);
             sincronizarComServidor();
         }
-
         function mudarAba(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
@@ -417,7 +414,3 @@
     </script>
 </body>
 </html>
-
-
-
-
