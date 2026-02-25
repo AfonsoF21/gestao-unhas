@@ -305,7 +305,7 @@
         const numLimpo = m.telefone_snapshot ? m.telefone_snapshot.replace(/\s/g, '') : '';
         
         // Texto da mensagem
-        const textoChat = `Alô ${m.nome_snapshot}, confirmo a tua marcação para o dia ${dataFormatada} às ${m.hora}. Beijinhos! ✨`;
+        const textoChat = `Alô ${m.nome_snapshot}, envio mensagem para recordar a marcação de dia ${dataFormatada} às ${m.hora}. Agradeço confirmação. Beijinho! ✨`;
         
         // Link usando o formato oficial wa.me com a mensagem encodada
         const linkWpp = numLimpo ? `<a href="https://wa.me/351${numLimpo}?text=${encodeURIComponent(textoChat)}" target="_blank" class="btn-whatsapp btn-small" style="text-decoration:none; display:inline-block;">📱 WhatsApp</a>` : '';
@@ -417,6 +417,7 @@
     </script>
 </body>
 </html>
+
 
 
 
