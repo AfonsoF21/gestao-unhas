@@ -139,12 +139,19 @@
                     <input type="date" id="input-data-agenda" onchange="renderAgenda()" style="margin-bottom: 20px;">
                     <div class="form-row">
                         <div class="form-group" style="flex:2;"><label>Cliente</label><select id="select-cliente-agenda"></select></div>
+                        <div class="form-group" style="flex:1.5;"><label>Serviço</label>
+                            <select id="select-servico-agenda">
+                                <option value="Mãos">Mãos</option>
+                                <option value="Pés">Pés</option>
+                                <option value="Mãos e Pés">Mãos e Pés</option>
+                            </select>
+                        </div>
                         <div class="form-group" style="flex:1;"><label>Hora</label><input type="time" id="input-hora-agenda"></div>
                         <button class="btn-primary" onclick="addAgenda()">Agendar</button>
                     </div>
                     <div class="table-responsive">
                         <table>
-                            <thead><tr><th>Hora</th><th>Cliente</th><th>Telemóvel</th><th>Ações</th></tr></thead>
+                            <thead><tr><th>Hora</th><th>Cliente</th><th>Serviço</th><th>Telemóvel</th><th>Ações</th></tr></thead>
                             <tbody id="tabela-agenda"></tbody>
                         </table>
                     </div>
@@ -280,7 +287,7 @@
             const tbody = document.getElementById('tabela-agenda');
             tbody.innerHTML = '';
             agendaDB.filter(a => a.dia === dia).sort((x,y) => x.hora.localeCompare(y.hora)).forEach(m => {
-                tbody.innerHTML += `<tr><td>${m.hora}</td><td>${m.nome_snapshot}</td><td>${m.telefone_snapshot || '-'}</td><td><button class="btn-danger btn-small" onclick="apagarAgenda('${m.id}')">Remover</button></td></tr>`;
+                tbody.innerHTML += `<tr><td>${m.hora}</td><td>${m.nome_snapshot}</td><td>${m.servico || '-'}</td><td>${m.telefone_snapshot || '-'}</td><td><button class="btn-danger btn-small" onclick="apagarAgenda('${m.id}')">Remover</button></td></tr>`;
             });
         }
 
@@ -314,10 +321,20 @@
         function cancelarEdicao() { idEmEdicao = null; document.getElementById('nome').value = ''; document.getElementById('btn-cancelar-edicao').style.display = 'none'; }
 
         async function addAgenda() {
-            const d = document.getElementById('input-data-agenda').value, h = document.getElementById('input-hora-agenda').value, id = document.getElementById('select-cliente-agenda').value;
+            const d = document.getElementById('input-data-agenda').value;
+            const h = document.getElementById('input-hora-agenda').value;
+            const s = document.getElementById('select-servico-agenda').value;
+            const id = document.getElementById('select-cliente-agenda').value;
             if(!d || !h || !id) return;
             const c = clientes.find(x => x.id === id);
-            await supabaseDB.from('agenda').insert([{dia:d, hora:h, id_cliente:id, nome_snapshot:c.nome, telefone_snapshot:c.telefone}]);
+            await supabaseDB.from('agenda').insert([{
+                dia:d, 
+                hora:h, 
+                servico:s, 
+                id_cliente:id, 
+                nome_snapshot:c.nome, 
+                telefone_snapshot:c.telefone
+            }]);
             sincronizarComServidor();
         }
 
@@ -350,6 +367,6 @@
         document.getElementById('input-data-agenda').value = hoje.toISOString().split('T')[0];
     </script>
 </body>
-
 </html>
+
 
