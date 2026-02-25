@@ -293,20 +293,35 @@
         }
 
         function renderAgenda() {
-            const dia = document.getElementById('input-data-agenda').value;
-            const tbody = document.getElementById('tabela-agenda');
-            tbody.innerHTML = '';
-            
-            const dataFormatada = dia.split('-').reverse().slice(0,2).join('/');
+    const dia = document.getElementById('input-data-agenda').value;
+    const tbody = document.getElementById('tabela-agenda');
+    tbody.innerHTML = '';
+    
+    // Formata a data para DD/MM (ex: 25/02)
+    const dataFormatada = dia.split('-').reverse().slice(0,2).join('/');
 
-            agendaDB.filter(a => a.dia === dia).sort((x,y) => x.hora.localeCompare(y.hora)).forEach(m => {
-                const mensagem = encodeURIComponent(`Olá ${m.nome_snapshot}, confirmo a tua marcação de ${m.servico} para o dia ${dataFormatada} às ${m.hora}. Até lá! ✨`);
-                const linkWpp = m.telefone_snapshot ? `<a href="https://wa.me/351${m.telefone_snapshot.replace(/\s/g, '')}?text=${mensagem}" target="_blank" class="btn-whatsapp btn-small" style="text-decoration:none; display:inline-block;">📱 WhatsApp</a>` : '';
-                
-                tbody.innerHTML += `<tr><td>${m.hora}</td><td>${m.nome_snapshot}</td><td>${m.servico || '-'}</td><td>${m.telefone_snapshot || '-'}</td><td>${linkWpp}<button class="btn-danger btn-small" onclick="apagarAgenda('${m.id}')">Remover</button></td></tr>`;
-            });
-        }
-
+    agendaDB.filter(a => a.dia === dia).sort((x,y) => x.hora.localeCompare(y.hora)).forEach(m => {
+        // Remove espaços do número para o link não quebrar
+        const numLimpo = m.telefone_snapshot ? m.telefone_snapshot.replace(/\s/g, '') : '';
+        
+        // Texto da mensagem
+        const textoChat = `Olá ${m.nome_snapshot}, confirmo a tua marcação de ${m.servico} para o dia ${dataFormatada} às ${m.hora}. Até lá! ✨`;
+        
+        // Link usando o formato oficial wa.me com a mensagem encodada
+        const linkWpp = numLimpo ? `<a href="https://wa.me/351${numLimpo}?text=${encodeURIComponent(textoChat)}" target="_blank" class="btn-whatsapp btn-small" style="text-decoration:none; display:inline-block;">📱 WhatsApp</a>` : '';
+        
+        tbody.innerHTML += `<tr>
+            <td>${m.hora}</td>
+            <td>${m.nome_snapshot}</td>
+            <td>${m.servico || '-'}</td>
+            <td>${m.telefone_snapshot || '-'}</td>
+            <td>
+                ${linkWpp}
+                <button class="btn-danger btn-small" onclick="apagarAgenda('${m.id}')">Remover</button>
+            </td>
+        </tr>`;
+    });
+}
         function renderFaturacao() {
             const mes = document.getElementById('input-mes').value;
             const tbody = document.getElementById('tabela-faturacao');
@@ -402,3 +417,4 @@
     </script>
 </body>
 </html>
+
