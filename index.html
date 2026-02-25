@@ -172,7 +172,7 @@
                 </div>
                 <div class="panel table-responsive">
                     <table id="tabela-clientes-root">
-                        <thead><tr><th>Nome</th><th>Contacto</th><th>Ações</th></tr></thead>
+                        <thead><tr><th>Nome</th><th>Contacto</th><th>Freq.</th><th>Duração</th><th>Ações</th></tr></thead>
                         <tbody id="tabela-clientes"></tbody>
                     </table>
                 </div>
@@ -270,9 +270,17 @@
                 selA.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
                 selF.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
                 
-                const linkWpp = c.telefone ? `<a href="https://wa.me/351${c.telefone.replace(/\s/g, '')}" target="_blank" class="btn-whatsapp btn-small" style="text-decoration:none; display:inline-block;">📱 WhatsApp</a>` : '';
-                
-                tbodyC.innerHTML += `<tr><td><b>${c.nome}</b></td><td>${c.telefone || '-'}</td><td>${linkWpp}<button class="btn-accent btn-small" onclick="carregarParaEdicao('${c.id}')">Editar</button><button class="btn-danger btn-small" onclick="apagarCliente('${c.id}')">Apagar</button></td></tr>`;
+                // Tabela de clientes atualizada com Freq e Duração, sem WhatsApp
+                tbodyC.innerHTML += `<tr>
+                    <td><b>${c.nome}</b></td>
+                    <td>${c.telefone || '-'}</td>
+                    <td>${c.frequencia} sem.</td>
+                    <td>${c.duracao}h</td>
+                    <td>
+                        <button class="btn-accent btn-small" onclick="carregarParaEdicao('${c.id}')">Editar</button>
+                        <button class="btn-danger btn-small" onclick="apagarCliente('${c.id}')">Apagar</button>
+                    </td>
+                </tr>`;
             });
 
             const totalHoras = config.horas_dia * config.dias_semana * 4;
@@ -337,8 +345,8 @@
             idEmEdicao = null; 
             document.getElementById('nome').value = ''; 
             document.getElementById('telefone').value = '';
-            document.getElementById('frequencia').value = "4"; // Volta ao padrão
-            document.getElementById('duracao').value = "1";   // Volta ao padrão
+            document.getElementById('frequencia').value = "4"; 
+            document.getElementById('duracao').value = "1";   
             document.getElementById('btn-cancelar-edicao').style.display = 'none'; 
         }
 
