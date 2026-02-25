@@ -270,7 +270,6 @@
                 selA.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
                 selF.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
                 
-                // Tabela de clientes atualizada com Freq e Duração, sem WhatsApp
                 tbodyC.innerHTML += `<tr>
                     <td><b>${c.nome}</b></td>
                     <td>${c.telefone || '-'}</td>
@@ -297,8 +296,13 @@
             const dia = document.getElementById('input-data-agenda').value;
             const tbody = document.getElementById('tabela-agenda');
             tbody.innerHTML = '';
+            
+            const dataFormatada = dia.split('-').reverse().slice(0,2).join('/');
+
             agendaDB.filter(a => a.dia === dia).sort((x,y) => x.hora.localeCompare(y.hora)).forEach(m => {
-                const linkWpp = m.telefone_snapshot ? `<a href="https://wa.me/351${m.telefone_snapshot.replace(/\s/g, '')}" target="_blank" class="btn-whatsapp btn-small" style="text-decoration:none; display:inline-block;">📱 WhatsApp</a>` : '';
+                const mensagem = encodeURIComponent(`Olá ${m.nome_snapshot}, confirmo a tua marcação de ${m.servico} para o dia ${dataFormatada} às ${m.hora}. Até lá! ✨`);
+                const linkWpp = m.telefone_snapshot ? `<a href="https://wa.me/351${m.telefone_snapshot.replace(/\s/g, '')}?text=${mensagem}" target="_blank" class="btn-whatsapp btn-small" style="text-decoration:none; display:inline-block;">📱 WhatsApp</a>` : '';
+                
                 tbody.innerHTML += `<tr><td>${m.hora}</td><td>${m.nome_snapshot}</td><td>${m.servico || '-'}</td><td>${m.telefone_snapshot || '-'}</td><td>${linkWpp}<button class="btn-danger btn-small" onclick="apagarAgenda('${m.id}')">Remover</button></td></tr>`;
             });
         }
