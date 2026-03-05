@@ -179,10 +179,10 @@
 
                 let classeCor = 'green'; 
                 
-                if (dataLoop < hoje) {
+              if (dataLoop < hoje) {
                     classeCor = 'past'; // Dia já passou
-                } else if (dataLoop.getDay() === 0) {
-                    classeCor = 'past'; // Domingos ficam cinzentos
+                } else if (dataLoop.getDay() === 0 || dataLoop.getDay() === 1) {
+                    classeCor = 'past'; // Domingos (0) e Segundas (1) ficam fechados/cinzentos
                 } else {
                     // Semáforo ativo
                     if (marcacoesNesteDia >= LIMITE_VERMELHO) {
@@ -203,5 +203,6 @@
     </script>
 </body>
 </html>
+
 
 
