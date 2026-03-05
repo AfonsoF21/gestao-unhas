@@ -948,8 +948,35 @@
                 <div id="config" class="section">
                     <div class="help-box">
                         <i class="fa-solid fa-wrench"></i>
-                        <p>Estas definições ajudam o sistema a calcular automaticamente se ainda tens vagas durante o mês no teu Painel Inicial.</p>
+                        <p>Estas definições ajudam o sistema a calcular automaticamente se ainda tens vagas durante o mês no teu Painel Inicial e impedem marcações em dias de férias.</p>
                     </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3><i class="fa-solid fa-umbrella-beach"></i> Bloquear Dias (Férias / Feriados)</h3>
+                        </div>
+                        <div class="form-grid" style="align-items: end;">
+                            <div class="form-group">
+                                <label>Escolher data para fechar</label>
+                                <input type="date" id="input-dia-fechado">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn-primary" onclick="bloquearDia()"><i class="fa-solid fa-lock"></i> Fechar Dia no Calendário</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive" style="margin-top: 1.5rem;">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Data Bloqueada</th>
+                                        <th style="text-align:right;">Reabrir</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabela-dias-fechados"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
                     <div class="panel">
                         <div class="panel-header">
                             <h3><i class="fa-regular fa-clock"></i> Parâmetros do teu Horário de Trabalho Útil</h3>
@@ -970,6 +997,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="panel" style="background: #FFF5F5; border-color: #FCA5A5;">
                         <div class="panel-header" style="border-bottom-color: #FECACA;">
                             <h3 style="color: #DC2626;"><i class="fa-solid fa-lock"></i> Segurança da Tua Conta Corporativa</h3>
@@ -991,6 +1019,7 @@
         let faturacaoDB = [];
         let agendaDB = [];
         let servicosDB = [];
+        let diasFechadosDB = []; // NOVO ESTADO
         let idEmEdicao = null;
         let idServicoEdicao = null;
         let config = { id: 1, horas_dia: 8, dias_semana: 5 };
@@ -1042,25 +1071,29 @@
             document.getElementById('loading-screen').style.display = m ? 'flex' : 'none'; 
         }
 
-        // Sincronizar Tudo
+        // Sincronizar Tudo (ATUALIZADO PARA PUXAR DIAS FECHADOS)
         async function sincronizarComServidor() { 
             mostrarLoading(true); 
             
-            const [resC, resF, resA, resConf, resS] = await Promise.all([ 
+            const [resC, resF, resA, resConf, resS, resD] = await Promise.all([ 
                 supabaseDB.from('clientes').select('*').order('nome'), 
                 supabaseDB.from('faturacao').select('*'), 
                 supabaseDB.from('agenda').select('*'), 
                 supabaseDB.from('config').select('*').eq('id', 1).single(), 
-                supabaseDB.from('servicos').select('*').order('nome') 
+                supabaseDB.from('servicos').select('*').order('nome'),
+                supabaseDB.from('dias_fechados').select('*').order('dia') // PUXAR FÉRIAS
             ]); 
             
             clientes = resC.data || []; 
             faturacaoDB = resF.data || []; 
             agendaDB = resA.data || []; 
             servicosDB = resS.data || []; 
+            diasFechadosDB = resD.data || []; // GUARDAR FÉRIAS
             
             if(resConf.data) {
                 config = resConf.data;
+                document.getElementById('config-horas-dia').value = config.horas_dia;
+                document.getElementById('config-dias-semana').value = config.dias_semana;
             } 
             
             renderTudo(); 
@@ -1103,6 +1136,7 @@
             }); 
             
             renderPrecos(); 
+            renderDiasFechados(); // MOSTRAR TABELA DE FÉRIAS
             
             const totalHoras = config.horas_dia * config.dias_semana * 4; 
             document.getElementById('dash-total-clientes').innerText = clientes.length; 
@@ -1245,6 +1279,61 @@
             document.getElementById('total-faturado-mes').innerText = total.toFixed(2) + ' €'; 
         }
 
+        // NOVA FUNÇÃO: Renderizar Tabela de Férias
+        function renderDiasFechados() {
+            const tbody = document.getElementById('tabela-dias-fechados');
+            tbody.innerHTML = '';
+            
+            if (diasFechadosDB.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; color: var(--text-muted); padding: 2.5rem; background: #F8FAFC; border-radius: 8px;">Nenhum dia de férias/bloqueado registado.</td></tr>`;
+            }
+            
+            diasFechadosDB.forEach(d => {
+                const dataFormatada = d.dia.split('-').reverse().join('/'); // Ex: 25/12/2023
+                
+                let linha = `
+                <tr>
+                    <td style="font-weight: 600;">${dataFormatada}</td>
+                    <td style="text-align:right;">
+                        <button class="btn-secondary btn-icon" style="color:#71717a; border-color:transparent;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#71717a'" onclick="apagarDiaFechado('${d.id}')"><i class="fa-solid fa-unlock"></i></button>
+                    </td>
+                </tr>`;
+                
+                tbody.innerHTML += linha;
+            });
+        }
+
+        // NOVA FUNÇÃO: Inserir Bloqueio no Supabase
+        async function bloquearDia() {
+            const d = document.getElementById('input-dia-fechado').value;
+            if(!d) {
+                alert("Por favor, escolhe uma data para bloquear.");
+                return;
+            }
+            
+            // Verificação para não repetir datas
+            if(diasFechadosDB.some(dia => dia.dia === d)) {
+                alert("Este dia já se encontra bloqueado.");
+                return;
+            }
+
+            mostrarLoading(true);
+            await supabaseDB.from('dias_fechados').insert([{ dia: d }]);
+            
+            document.getElementById('input-dia-fechado').value = '';
+            sincronizarComServidor();
+        }
+
+        // NOVA FUNÇÃO: Remover Bloqueio
+        async function apagarDiaFechado(id) {
+            if(confirm("Tens a certeza que queres reabrir este dia na tua agenda?")) {
+                mostrarLoading(true);
+                await supabaseDB.from('dias_fechados').delete().eq('id', id);
+                sincronizarComServidor();
+            }
+        }
+
+        // ATUALIZADA: Adicionar Marcação
         async function addAgenda() { 
             const d = document.getElementById('input-data-agenda').value;
             const h = document.getElementById('input-hora-agenda').value; 
@@ -1257,6 +1346,12 @@
                 alert("Ups! Falta preencher alguns dados obrigatórios para concluir o agendamento corporativo profissional."); 
                 return; 
             } 
+            
+            // *** NOVA VALIDAÇÃO DE FÉRIAS AQUI ***
+            if(diasFechadosDB.some(diaFechado => diaFechado.dia === d)) {
+                alert("Atenção: Não podes agendar neste dia porque está marcado como Férias/Fechado nas Definições.");
+                return;
+            }
             
             mostrarLoading(true); 
             
@@ -1357,9 +1452,9 @@
         }
 
         // Definir a data base dos inputs para hoje
-        const hoje = new Date(); 
-        document.getElementById('input-mes').value = hoje.getFullYear() + "-" + String(hoje.getMonth() + 1).padStart(2, '0'); 
-        document.getElementById('input-data-agenda').value = hoje.toISOString().split('T')[0];
+        const hojeObj = new Date(); 
+        document.getElementById('input-mes').value = hojeObj.getFullYear() + "-" + String(hojeObj.getMonth() + 1).padStart(2, '0'); 
+        document.getElementById('input-data-agenda').value = hojeObj.toISOString().split('T')[0];
     </script>
 </body>
 </html>
