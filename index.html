@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
@@ -119,7 +118,7 @@
             background: var(--gold-primary); 
             border-radius: 50% 50% 0 50%; 
             transform: rotate(15deg); 
-            opacity: 0.5; 
+            opacity: 0.5;
         }
         .logo-sparkle { 
             position: absolute; 
@@ -150,14 +149,14 @@
         .help-box i { 
             color: var(--gold-primary); 
             font-size: 1.2rem; 
-            margin-top: 2px;
+            margin-top: 2px; 
         }
         .help-box p { 
             font-size: 0.9rem; 
             color: var(--gold-text); 
             margin: 0; 
             line-height: 1.5; 
-            font-weight: 500;
+            font-weight: 500; 
         }
 
         /* --- TELA DE LOGIN --- */
@@ -179,55 +178,50 @@
             width: 90%; 
             max-width: 420px; 
             border: 1px solid rgba(212, 175, 55, 0.2); 
+            animation: slideUp 0.6s ease; 
         }
         .login-box h2 { 
-            font-size: 1.6rem; 
-            font-weight: 700; 
-            color: var(--text-main); 
+            font-family: 'Playfair Display', serif; 
+            font-size: 2.1rem; 
             margin-bottom: 0.5rem; 
+            color: var(--text-main); 
         }
         .login-box p { 
             color: var(--text-muted); 
-            margin-bottom: 2rem; 
             font-size: 0.95rem; 
+            margin-bottom: 2.5rem; 
+            letter-spacing: 0.5px; 
         }
-        .login-box input { 
+        .input-group-login { 
+            margin-bottom: 1.25rem; 
+            text-align: left; 
+        }
+        .input-group-login label { 
+            display: block; 
+            font-size: 0.8rem; 
+            font-weight: 700; 
+            color: var(--text-muted); 
+            margin-bottom: 0.5rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+        .input-group-login input { 
             width: 100%; 
-            padding: 14px 16px; 
-            margin-bottom: 1rem; 
-            border: 2px solid var(--border-light); 
+            padding: 14px 18px; 
+            border: 1.5px solid var(--border-light); 
             border-radius: var(--radius-md); 
-            font-size: 1rem; 
             outline: none; 
+            font-size: 1rem; 
             transition: var(--transition); 
-            background: #FCFCFC; 
-            color: var(--text-main); 
+            background: #FAFAFA; 
         }
-        .login-box input:focus { 
+        .input-group-login input:focus { 
             border-color: var(--gold-primary); 
-            background: #FFF; 
+            background: white; 
             box-shadow: 0 0 0 4px var(--gold-light); 
         }
-        .login-box button { 
-            width: 100%; 
-            padding: 14px; 
-            background: var(--gold-primary); 
-            color: #FFF; 
-            border: none; 
-            border-radius: var(--radius-md); 
-            font-size: 1.05rem; 
-            font-weight: 600; 
-            cursor: pointer; 
-            transition: var(--transition); 
-            margin-top: 1rem; 
-        }
-        .login-box button:hover { 
-            background: var(--gold-hover); 
-            transform: translateY(-2px); 
-            box-shadow: var(--shadow-hover); 
-        }
 
-        /* --- LOADING --- */
+        /* --- LOADING SCREEN --- */
         #loading-screen { 
             position: fixed; 
             inset: 0; 
@@ -252,46 +246,41 @@
             100% { transform: rotate(360deg); } 
         }
 
-        /* --- APP SHELL --- */
+        /* --- INTERFACE PRINCIPAL --- */
         #app-interface { 
             display: none; 
             width: 100vw; 
             height: 100vh; 
             height: 100dvh; 
         }
-        
+
+        /* SIDEBAR PROFISSIONAL */
         .sidebar { 
             width: var(--sidebar-width); 
             background: var(--bg-panel); 
             border-right: 1px solid var(--border-light); 
             display: flex; 
             flex-direction: column; 
-            flex-shrink: 0; 
-            box-shadow: 2px 0 10px rgba(0,0,0,0.02); 
             z-index: 10; 
-            height: 100vh; 
-            height: 100dvh; 
+            transition: var(--transition); 
         }
         .sidebar-header { 
             height: var(--topbar-height); 
             display: flex; 
             align-items: center; 
             padding: 0 2rem; 
-            margin-bottom: 1.5rem; 
-            margin-top: 1rem; 
             gap: 12px; 
+            margin-top: 1rem; 
         }
-        .sidebar-header .logo-text { 
-            font-size: 1.25rem; 
-            font-weight: 700; 
-            color: var(--text-main); 
+        .nav-menu { 
+            flex: 1; 
+            padding: 2rem 0.75rem; 
             display: flex; 
-            align-items: center; 
-            gap: 10px; 
+            flex-direction: column; 
+            gap: 6px; 
         }
-        
         .menu-item { 
-            padding: 12px 2rem; 
+            padding: 12px 1.25rem; 
             cursor: pointer; 
             transition: var(--transition); 
             font-size: 0.95rem; 
@@ -300,7 +289,6 @@
             gap: 14px; 
             color: var(--text-muted); 
             font-weight: 500; 
-            margin: 4px 12px; 
             border-radius: var(--radius-md); 
         }
         .menu-item i { 
@@ -308,14 +296,11 @@
             font-size: 1.1rem; 
             text-align: center; 
             color: #CBD5E1; 
-            transition: var(--transition);
+            transition: var(--transition); 
         }
         .menu-item:hover { 
             color: var(--text-main); 
             background: #F8FAFC; 
-        }
-        .menu-item:hover i { 
-            color: var(--gold-primary); 
         }
         .menu-item.active { 
             background: var(--gold-light); 
@@ -326,13 +311,14 @@
             color: var(--gold-primary); 
         }
 
+        /* MAIN CONTENT WRAPPER */
         .main-wrapper { 
             flex: 1; 
             display: flex; 
             flex-direction: column; 
             height: 100vh; 
-            height: 100dvh; 
             position: relative; 
+            background: var(--bg-app); 
         }
         .topbar { 
             height: var(--topbar-height); 
@@ -342,232 +328,178 @@
             padding: 0 3rem; 
             background: var(--bg-app); 
             border-bottom: 1px solid var(--border-light); 
-            flex-shrink: 0; 
         }
         .topbar-title { 
             font-size: 1.4rem; 
             font-weight: 700; 
             color: var(--text-main); 
+            letter-spacing: -0.5px; 
         }
-        .topbar-right { 
-            display: flex; 
-            align-items: center; 
-            gap: 15px; 
-        }
-        .topbar-date { 
-            font-size: 0.9rem; 
-            color: var(--text-muted); 
-            font-weight: 500; 
-            background: #FFF; 
-            padding: 8px 16px; 
-            border-radius: 20px; 
-            border: 1px solid var(--border-light); 
-            box-shadow: var(--shadow-soft);
-        }
-        .user-circle { 
-            width: 40px; 
-            height: 40px; 
-            background: var(--gold-light); 
-            color: var(--gold-text); 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: 700; 
-            border: 1px solid var(--gold-primary);
-        }
-
         .content-area { 
             flex: 1; 
             padding: 2.5rem 3rem; 
             overflow-y: auto; 
-            scroll-behavior: smooth; 
+            -webkit-overflow-scrolling: touch; 
         }
-        .content-area::-webkit-scrollbar { width: 6px; }
-        .content-area::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 10px; }
-        
+
+        /* ANIMAÇÃO DE ENTRADA DAS SECÇÕES */
         .section { 
             display: none; 
-            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+            animation: slideUp 0.4s ease forwards; 
             opacity: 0; 
-            transform: translateY(20px); 
+            transform: translateY(10px); 
         }
-        .section.active { display: block; }
+        .section.active { 
+            display: block; 
+        }
         @keyframes slideUp { 
             to { opacity: 1; transform: translateY(0); } 
         }
 
+        /* --- ELEMENTOS DE UI REUTILIZÁVEIS --- */
         .dashboard-cards { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
             gap: 1.5rem; 
             margin-bottom: 2.5rem; 
         }
         .card { 
             background: var(--bg-panel); 
-            padding: 2rem; 
+            padding: 1.75rem; 
             border-radius: var(--radius-lg); 
             border: 1px solid var(--border-light); 
             box-shadow: var(--shadow-soft); 
             transition: var(--transition); 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
         }
         .card:hover { 
-            transform: translateY(-3px); 
             box-shadow: var(--shadow-hover); 
-            border-color: rgba(212, 175, 55, 0.3); 
-        }
-        .card-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 1rem; 
+            border-color: rgba(212, 175, 55, 0.2); 
+            transform: translateY(-2px); 
         }
         .card h3 { 
-            font-size: 0.95rem; 
+            font-size: 0.85rem; 
             color: var(--text-muted); 
-            font-weight: 600; 
-        }
-        .card .icon-wrapper { 
-            width: 45px; 
-            height: 45px; 
-            background: var(--gold-light); 
-            border-radius: 12px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: var(--gold-primary); 
-            font-size: 1.2rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            margin-bottom: 1rem; 
         }
         .card .value { 
-            font-size: 2.4rem; 
-            font-weight: 700; 
+            font-size: 2.2rem; 
+            font-weight: 800; 
             color: var(--text-main); 
-            line-height: 1;
+            letter-spacing: -1px; 
+        }
+        .card .sub { 
+            font-size: 0.85rem; 
+            color: var(--gold-text); 
+            margin-top: 0.5rem; 
+            font-weight: 600; 
+            display: flex; 
+            align-items: center; 
+            gap: 4px; 
         }
 
         .panel { 
             background: var(--bg-panel); 
-            padding: 2.5rem; 
+            padding: 2rem; 
             border-radius: var(--radius-lg); 
             border: 1px solid var(--border-light); 
             margin-bottom: 2rem; 
             box-shadow: var(--shadow-soft); 
         }
         .panel-header { 
-            margin-bottom: 2rem; 
-            border-bottom: 2px solid var(--bg-app); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 1.75rem; 
             padding-bottom: 1rem; 
+            border-bottom: 1px solid var(--border-light); 
         }
         .panel-header h3 { 
-            font-size: 1.2rem; 
+            font-size: 1.1rem; 
             font-weight: 700; 
             color: var(--text-main); 
-            display: flex; 
-            align-items: center; 
-            gap: 10px;
         }
-        .panel-header h3 i { 
-            color: var(--gold-primary); 
-        }
-        
+
+        /* FORMULÁRIOS PROFISSIONAIS */
         .form-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-            gap: 1.5rem; 
-            align-items: start;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 1.25rem; 
+            margin-bottom: 1.5rem; 
         }
         .form-group { 
             display: flex; 
             flex-direction: column; 
             gap: 6px; 
         }
-        label { 
-            font-size: 0.9rem; 
-            font-weight: 600; 
-            color: var(--text-main); 
+        .form-group label { 
+            font-size: 0.8rem; 
+            font-weight: 700; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
         }
-        input, select { 
-            padding: 14px 16px; 
-            border: 2px solid var(--border-light); 
+        input, select, textarea { 
+            padding: 12px 14px; 
+            border: 1px solid var(--border-light); 
             border-radius: var(--radius-md); 
             font-size: 0.95rem; 
-            outline: none; 
-            transition: var(--transition); 
-            background: #FCFCFC; 
             color: var(--text-main); 
-            width: 100%; 
-            -webkit-appearance: none; 
-            appearance: none; 
+            background: #FCFCFC; 
+            transition: var(--transition); 
+            outline: none; 
         }
         input:focus, select:focus { 
             border-color: var(--gold-primary); 
-            background: #FFF; 
-            box-shadow: 0 0 0 4px var(--gold-light); 
-        }
-        select { 
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D4AF37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); 
-            background-repeat: no-repeat; 
-            background-position: right 1rem center; 
-            background-size: 1.2em; 
-            cursor: pointer;
-        }
-        
-        /* Ajuste do calendário nativo para combinar com a cor */
-        ::-webkit-calendar-picker-indicator { 
-            filter: invert(30%) sepia(90%) saturate(1200%) hue-rotate(10deg); 
-            cursor: pointer; 
-            opacity: 0.6; 
+            background: white; 
+            box-shadow: 0 0 0 3px var(--gold-light); 
         }
 
-        button { 
-            padding: 14px 24px; 
-            border: none; 
-            border-radius: var(--radius-md); 
-            cursor: pointer; 
-            font-weight: 600; 
-            font-size: 0.95rem; 
-            transition: var(--transition); 
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px; 
-        }
+        /* BOTÕES DE LUXO */
         .btn-primary { 
             background: var(--gold-primary); 
-            color: #FFF; 
-            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2); 
+            color: white; 
+            border: none; 
+            padding: 12px 24px; 
+            border-radius: var(--radius-md); 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: var(--transition); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            font-size: 0.9rem; 
         }
         .btn-primary:hover { 
             background: var(--gold-hover); 
-            transform: translateY(-1px); 
-            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.3); 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 20px -5px rgba(212, 175, 55, 0.4); 
         }
         .btn-secondary { 
-            background: #FFF; 
+            background: white; 
             color: var(--text-main); 
-            border: 2px solid var(--border-light); 
+            border: 1px solid var(--border-light); 
+            padding: 10px 18px; 
+            border-radius: var(--radius-sm); 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: var(--transition); 
+            font-size: 0.85rem; 
         }
         .btn-secondary:hover { 
             border-color: var(--gold-primary); 
-            color: var(--gold-text); 
+            color: var(--gold-primary); 
             background: var(--gold-light); 
         }
-        .btn-icon { 
-            padding: 10px; 
-            min-width: 40px; 
-            height: 40px; 
-            border-radius: var(--radius-sm); 
-        }
 
-        .table-responsive { 
+        /* TABELAS ELEGANTES */
+        .table-container { 
             width: 100%; 
             overflow-x: auto; 
-            background: #FFF; 
             border-radius: var(--radius-md); 
-            border: 1px solid var(--border-light); 
         }
         table { 
             width: 100%; 
@@ -575,89 +507,102 @@
             text-align: left; 
         }
         th { 
+            padding: 14px 18px; 
             background: #F8FAFC; 
             color: var(--text-muted); 
-            font-weight: 600; 
-            font-size: 0.8rem; 
-            padding: 16px 20px; 
-            border-bottom: 2px solid var(--border-light); 
+            font-size: 0.75rem; 
+            font-weight: 700; 
             text-transform: uppercase; 
-            letter-spacing: 0.5px; 
+            letter-spacing: 1px; 
+            border-bottom: 2px solid var(--border-light); 
         }
         td { 
-            padding: 16px 20px; 
+            padding: 16px 18px; 
             border-bottom: 1px solid var(--border-light); 
             font-size: 0.95rem; 
             color: var(--text-main); 
-            font-weight: 500; 
-        }
-        tr:last-child td { 
-            border-bottom: none; 
         }
         tr:hover td { 
-            background: var(--gold-light); 
+            background: #FAFAFA; 
         }
-        
         .badge { 
-            display: inline-flex; 
-            align-items: center; 
             padding: 6px 12px; 
             border-radius: 20px; 
-            font-size: 0.8rem; 
-            font-weight: 600; 
-            background: #F1F5F9; 
-            color: var(--text-muted); 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
         }
         .badge-gold { 
             background: var(--gold-light); 
             color: var(--gold-text); 
-            border: 1px solid rgba(212, 175, 55, 0.3); 
         }
-        .badge-green { 
-            background: #ECFDF5; 
-            color: #059669; 
-            border: 1px solid #A7F3D0; 
+        .badge-time { 
+            background: #F1F5F9; 
+            color: #475569; 
         }
 
+        /* RESPONSIVIDADE EXTREMA (PARA IPHONE) */
         @media (max-width: 1024px) {
-            #app-interface { 
-                flex-direction: column; 
-            }
             .sidebar { 
+                position: fixed; 
+                bottom: 0; 
+                left: 0; 
                 width: 100%; 
-                height: auto; 
+                height: 75px; 
                 flex-direction: row; 
-                padding: 0.5rem; 
+                padding: 0 10px; 
                 border-right: none; 
-                border-bottom: 1px solid var(--border-light); 
-                overflow-x: auto; 
-                z-index: 1000;
+                border-top: 1px solid var(--border-light); 
+                background: rgba(255,255,255,0.95); 
+                backdrop-filter: blur(10px); 
             }
-            .sidebar-header { display: none; }
+            .sidebar-header { 
+                display: none; 
+            }
+            .nav-menu { 
+                flex-direction: row; 
+                padding: 0; 
+                gap: 5px; 
+                justify-content: space-around; 
+                align-items: center; 
+            }
             .menu-item { 
-                padding: 10px; 
-                margin: 0; 
-                flex: 1; 
-                justify-content: center; 
                 flex-direction: column; 
-                gap: 6px; 
-                font-size: 0.8rem;
+                padding: 8px 5px; 
+                gap: 4px; 
+                font-size: 0.65rem; 
+                text-align: center; 
+                flex: 1; 
+                min-width: 0; 
             }
-            .menu-item.active { 
-                background: transparent; 
-                color: var(--gold-primary); 
-                border-bottom: 3px solid var(--gold-primary); 
-                border-radius: 0;
+            .menu-item i { 
+                font-size: 1.25rem; 
             }
-            .topbar { padding: 1.5rem; }
-            .topbar-title { font-size: 1.1rem; }
-            .topbar-right { display: flex; }
-            .topbar-date { display: none; }
+            .main-wrapper { 
+                height: calc(100vh - 75px); 
+                height: calc(100dvh - 75px); 
+            }
+            .topbar { 
+                padding: 0 1.5rem; 
+            }
+            .topbar-title { 
+                font-size: 1.2rem; 
+            }
             .content-area { 
-                padding: 1.5rem; 
-                padding-bottom: 100px; 
+                padding: 1.5rem 1rem; 
+                padding-bottom: 2rem; 
             }
-            .form-grid { grid-template-columns: 1fr; }
+            .dashboard-cards { 
+                grid-template-columns: 1fr; 
+            }
+            .form-grid { 
+                grid-template-columns: 1fr; 
+            }
+            .panel { 
+                padding: 1.25rem; 
+            }
         }
     </style>
 </head>
@@ -665,147 +610,182 @@
 
     <div id="login-screen">
         <div class="login-box">
-           <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
-                <img src="icone-app.png" alt="GlowUp Logo" style="width: 85px; height: 85px; border-radius: 50%; object-fit: cover; box-shadow: 0 10px 25px rgba(212, 175, 55, 0.25); border: 2px solid var(--gold-primary);">
+            <div class="logo-wrapper" style="width: 70px; height: 70px; margin-bottom: 1.5rem;">
+                <div class="logo-circle" style="border-width: 2.5px;">
+                    <span class="logo-g-it" style="font-size: 3.5rem;">g</span>
+                </div>
+                <div class="logo-leaf" style="width: 20px; height: 20px; right: 8px;"></div>
+            </div>
+            <h2>Olá, Mariana!</h2>
+            <p>Seja bem-vinda ao seu sistema GlowUp.</p>
+            
+            <div class="input-group-login">
+                <label>E-mail Corporativo</label>
+                <input type="email" id="email-login" placeholder="exemplo@glowup.pt">
             </div>
             
-            <h2>Olá, Mariana!</h2>
-            <p>Acede à tua área de gestão profissional.</p>
-            <input type="email" id="input-email" placeholder="O teu e-mail corporativo">
-            <input type="password" id="input-password" placeholder="A tua palavra-passe">
-            <button onclick="verificarLogin()">Entrar <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i></button>
+            <div class="input-group-login">
+                <label>Palavra-Passe</label>
+                <input type="password" id="pass-login" placeholder="••••••••">
+            </div>
+            
+            <button onclick="autenticar()" class="btn-primary" style="width: 100%; padding: 16px; margin-top: 1rem;">
+                Entrar no Ecossistema <i class="fa-solid fa-arrow-right"></i>
+            </button>
         </div>
     </div>
 
     <div id="loading-screen">
         <div class="spinner"></div>
+        <p style="margin-top: 1.5rem; color: var(--gold-text); font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">
+            A SINCRONIZAR DADOS...
+        </p>
     </div>
 
     <div id="app-interface">
+        
         <nav class="sidebar">
             <div class="sidebar-header">
-                <img src="icone-app.png" alt="GlowUp" style="width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--gold-primary); object-fit: cover;">
-                <div class="logo-text">GlowUp</div>
+                <div class="logo-wrapper">
+                    <div class="logo-circle">
+                        <span class="logo-g-it">g</span>
+                    </div>
+                </div>
+                <div style="flex: 1;">
+                    <span style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); display: block;">GlowUp</span>
+                    <span style="font-size: 0.7rem; font-weight: 600; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 0.5px;">Business Suite</span>
+                </div>
             </div>
-            <div class="menu-item active" onclick="mudarAba('dashboard', 'Painel Inicial', this)">
-                <i class="fa-solid fa-house"></i> Início
+
+            <div class="nav-menu">
+                <div class="menu-item active" onclick="mudarAba('dashboard', 'Painel de Controlo', this)">
+                    <i class="fa-solid fa-house"></i> Início
+                </div>
+                <div class="menu-item" onclick="mudarAba('agenda', 'Agenda Profissional', this)">
+                    <i class="fa-regular fa-calendar-check"></i> Marcações
+                </div>
+                <div class="menu-item" onclick="mudarAba('clientes', 'Gestão de Clientes', this)">
+                    <i class="fa-regular fa-address-book"></i> Clientes
+                </div>
+                <div class="menu-item" onclick="mudarAba('servicos', 'Catálogo de Serviços', this)">
+                    <i class="fa-solid fa-tag"></i> Serviços
+                </div>
+                <div class="menu-item" onclick="mudarAba('faturacao', 'Análise Financeira', this)">
+                    <i class="fa-solid fa-chart-pie"></i> Finanças
+                </div>
             </div>
-            <div class="menu-item" onclick="mudarAba('agenda', 'Gestão de Agenda', this)">
-                <i class="fa-regular fa-calendar-check"></i> Marcações
-            </div>
-            <div class="menu-item" onclick="mudarAba('clientes', 'Base de Clientes', this)">
-                <i class="fa-regular fa-address-book"></i> Clientes
-            </div>
-            <div class="menu-item" onclick="mudarAba('precos-tab', 'Catálogo de Serviços', this)">
-                <i class="fa-solid fa-tag"></i> Serviços
-            </div>
-            <div class="menu-item" onclick="mudarAba('faturacao', 'Controlo Financeiro', this)">
-                <i class="fa-solid fa-chart-pie"></i> Finanças
-            </div>
-            <div class="menu-item" onclick="mudarAba('config', 'Definições do Sistema', this)">
-                <i class="fa-solid fa-gear"></i> Definições
+
+            <div style="padding: 1.5rem; border-top: 1px solid var(--border-light);">
+                <button onclick="logout()" class="btn-secondary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; color: #EF4444;">
+                    <i class="fa-solid fa-power-off"></i> Sair do Sistema
+                </button>
             </div>
         </nav>
 
         <div class="main-wrapper">
             <header class="topbar">
-                <div class="topbar-title" id="page-title">Painel Inicial</div>
-                <div class="topbar-right">
-                    <div class="topbar-date" id="data-hoje"></div>
-                    <div class="user-circle">MP</div>
+                <div class="topbar-title" id="page-title">Painel de Controlo</div>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div style="text-align: right; line-height: 1.2; display: none; @media (min-width: 1025px) { display: block; }">
+                        <div id="data-hoje" style="font-size: 0.85rem; font-weight: 700; color: var(--text-main);">Quinta-feira, 22 de Junho</div>
+                        <div id="relogio" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">10:45:22</div>
+                    </div>
                 </div>
             </header>
 
             <main class="content-area">
+                
                 <div id="dashboard" class="section active">
-                    <div class="help-box">
-                        <i class="fa-solid fa-spa"></i>
-                        <p>Bem-vinda ao teu espaço de gestão. Aqui tens um resumo rápido de como está o teu negócio este mês.</p>
-                    </div>
                     <div class="dashboard-cards">
                         <div class="card">
-                            <div class="card-header">
-                                <h3>Total de Clientes Registadas</h3>
-                                <div class="icon-wrapper"><i class="fa-solid fa-users"></i></div>
-                            </div>
+                            <h3>Clientes Ativas</h3>
                             <div class="value" id="dash-total-clientes">0</div>
-                            <span class="didactic-text">Número de clientes guardadas na tua base de dados.</span>
+                            <div class="sub"><i class="fa-solid fa-circle-check"></i> Carteira Consolidada</div>
                         </div>
                         <div class="card">
-                            <div class="card-header">
-                                <h3>Horas de Trabalho (Mês)</h3>
-                                <div class="icon-wrapper"><i class="fa-regular fa-clock"></i></div>
-                            </div>
-                            <div class="value" id="dash-horas-ocupadas">0h</div>
-                            <span class="didactic-text">Tempo total estimado de serviços agendados para este mês.</span>
+                            <h3>Ocupação Mensal</h3>
+                            <div class="value" id="dash-ocupacao">0h</div>
+                            <div class="sub"><i class="fa-solid fa-clock"></i> Horas de Serviço Efetivo</div>
                         </div>
-                        <div class="card" style="border: 2px solid var(--gold-primary);">
-                            <div class="card-header">
-                                <h3 style="color: var(--gold-text);">Vagas Disponíveis</h3>
-                                <div class="icon-wrapper" style="background: var(--gold-primary); color: white;"><i class="fa-solid fa-calendar-day"></i></div>
-                            </div>
-                            <div class="value" style="color: var(--gold-text);" id="dash-vagas">0h</div>
-                            <span class="didactic-text">Número de horas livres na tua agenda para novas marcações.</span>
+                        <div class="card" style="border: 1px solid var(--gold-primary);">
+                            <h3>Vagas Livres</h3>
+                            <div class="value" id="dash-vagas" style="color: var(--gold-primary);">0h</div>
+                            <div class="sub" style="color: var(--gold-hover);"><i class="fa-solid fa-calendar-plus"></i> Potencial de Agenda</div>
                         </div>
                     </div>
+
                     <div class="panel">
-                        <div class="panel-header" style="border:none; margin-bottom: 0.5rem;">
-                            <h3><i class="fa-solid fa-chart-bar"></i> Lotação Mensal de Agenda</h3>
+                        <div class="panel-header">
+                            <h3>Indicadores de Produtividade</h3>
                         </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <span class="didactic-text" style="margin:0;">Percentagem de tempo utilizado com base na tua configuração de horário útil.</span>
-                            <span id="texto-ocupacao" style="font-weight: 700; color: var(--gold-text);">0%</span>
-                        </div>
-                        <div style="height:12px; background:var(--border-light); border-radius:6px; overflow:hidden;">
-                            <div id="barra-ocupacao" style="width: 0%; height:100%; background:var(--gold-primary); transition: width 1s ease; border-radius: 6px;"></div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; text-align: center;">
+                            <div style="padding: 1rem; background: var(--gold-light); border-radius: var(--radius-md);">
+                                <div style="font-size: 0.7rem; font-weight: 800; color: var(--gold-text); margin-bottom: 5px;">MÉDIA SEMANAL</div>
+                                <div id="prod-media" style="font-size: 1.5rem; font-weight: 800; color: var(--gold-primary);">0%</div>
+                            </div>
+                            <div style="padding: 1rem; background: #F1F5F9; border-radius: var(--radius-md);">
+                                <div style="font-size: 0.7rem; font-weight: 800; color: #475569; margin-bottom: 5px;">DIAS TRABALHADOS</div>
+                                <div id="prod-dias" style="font-size: 1.5rem; font-weight: 800; color: #1E293B;">0</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div id="agenda" class="section">
-                    <div class="help-box">
-                        <i class="fa-solid fa-circle-info"></i>
-                        <p>Ao adicionares uma marcação aqui, o valor do serviço é automaticamente registado nas tuas Finanças, sem trabalho duplicado!</p>
-                    </div>
-                    <div class="panel">
-                        <div class="panel-header" style="display: flex; justify-content: space-between; border-bottom: none;">
-                            <h3><i class="fa-regular fa-calendar-check"></i> Novo Agendamento</h3>
-                            <input type="date" id="input-data-agenda" onchange="renderAgenda()" style="width: auto; padding: 10px 16px; background: #FFF; border-color: var(--border-light);">
-                        </div>
-                        <div class="form-grid" style="align-items: end;">
-                            <div class="form-group">
-                                <label>1. Quem é a cliente?</label>
-                                <select id="select-cliente-agenda"></select>
-                            </div>
-                            <div class="form-group">
-                                <label>2. Que serviço vai fazer?</label>
-                                <select id="select-servico-agenda"></select>
-                            </div>
-                            <div class="form-group">
-                                <label>3. A que horas começa?</label>
-                                <input type="time" id="input-hora-agenda">
-                            </div>
-                            <div class="form-group">
-                                <button class="btn-primary" onclick="addAgenda()" style="height: 50px;">Agendar e Faturar <i class="fa-solid fa-floppy-disk"></i></button>
-                            </div>
-                        </div>
-                    </div>
                     <div class="panel">
                         <div class="panel-header">
-                            <h3><i class="fa-solid fa-list-check"></i> Marcações do Dia Selecionado</h3>
+                            <h3>Registar Novo Agendamento</h3>
                         </div>
-                        <div class="table-responsive">
+                        <div class="help-box">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            <p>Ao agendar, o sistema deduzirá automaticamente as horas da sua disponibilidade mensal e contabilizará para a faturação prevista.</p>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Data da Sessão</label>
+                                <input type="date" id="input-data-agenda" onchange="renderListaAgenda()">
+                            </div>
+                            <div class="form-group">
+                                <label>Cliente</label>
+                                <select id="select-cliente-agenda">
+                                    <option value="">Carregando clientes...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Serviço Pretendido</label>
+                                <select id="select-servico-agenda">
+                                    <option value="">Carregando serviços...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Horário de Início</label>
+                                <input type="time" id="input-hora-agenda">
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end;">
+                            <button class="btn-primary" onclick="salvarAgendamento()">
+                                <i class="fa-solid fa-calendar-check"></i> Confirmar Marcação
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Marcações do Dia</h3>
+                            <div id="data-selecionada" style="font-size: 0.9rem; font-weight: 700; color: var(--gold-primary);"></div>
+                        </div>
+                        <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
                                         <th>Hora</th>
                                         <th>Cliente</th>
                                         <th>Serviço</th>
-                                        <th>Notificar</th>
-                                        <th style="text-align:right;">Apagar</th>
+                                        <th style="text-align: right;">Ações</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tabela-agenda"></tbody>
+                                <tbody id="tabela-agenda-lista">
+                                    </tbody>
                             </table>
                         </div>
                     </div>
@@ -814,548 +794,537 @@
                 <div id="clientes" class="section">
                     <div class="panel">
                         <div class="panel-header">
-                            <h3><i class="fa-regular fa-id-card"></i> Adicionar/Editar Ficha de Cliente</h3>
+                            <h3 id="titulo-form-cliente">Registar Nova Cliente</h3>
                         </div>
                         <div class="form-grid">
                             <div class="form-group">
-                                <label>Nome Completo da Cliente *</label>
-                                <input type="text" id="nome" placeholder="Ex: Mariana Pereira">
+                                <label>Nome Profissional</label>
+                                <input type="text" id="input-nome-cliente" placeholder="Ex: Ana Silva">
                             </div>
                             <div class="form-group">
-                                <label>Nº Telemóvel (WhatsApp)</label>
-                                <input type="text" id="telefone" placeholder="Ex: 912345678">
-                                <span class="didactic-text">Este número é usado para os lembretes do WhatsApp.</span>
+                                <label>Contacto Direto (Tel)</label>
+                                <input type="text" id="input-tel-cliente" placeholder="9xx xxx xxx">
                             </div>
                             <div class="form-group">
-                                <label>Frequência (Com que periodicidade vem?)</label>
-                                <select id="frequencia">
-                                    <option value="3">A cada 3 Semanas</option>
-                                    <option value="4" selected>A cada 4 Semanas</option>
-                                    <option value="5">A cada 5 Semanas</option>
-                                </select>
+                                <label>Frequência (Semanas)</label>
+                                <input type="number" id="input-frequencia-cliente" value="4" step="1" min="1">
+                                <span class="didactic-text">De quanto em quanto tempo a cliente regressa.</span>
                             </div>
                             <div class="form-group">
-                                <label>Duração Prevista do Serviço</label>
-                                <select id="duracao">
-                                    <option value="1">1 Hora</option>
-                                    <option value="1.5">1h 30m</option>
-                                    <option value="2">2 Horas</option>
-                                </select>
+                                <label>Duração Média (Horas)</label>
+                                <input type="number" id="input-duracao-cliente" value="1.5" step="0.5" min="0.5">
+                                <span class="didactic-text">Quanto tempo costuma durar o serviço.</span>
                             </div>
-                            <div class="form-group" style="flex-direction: row; gap: 10px; grid-column: 1 / -1; margin-top: 10px;">
-                                <button id="btn-salvar-cliente" class="btn-primary" onclick="salvarCliente()"><i class="fa-solid fa-user-plus"></i> Guardar Ficha de Cliente</button>
-                                <button id="btn-cancelar-edicao" class="btn-secondary" onclick="cancelarEdicao()" style="display:none;"><i class="fa-solid fa-times"></i></button>
-                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                            <button id="btn-cancelar-edit-cliente" class="btn-secondary" style="display: none;" onclick="resetFormCliente()">Cancelar Edição</button>
+                            <button class="btn-primary" onclick="salvarCliente()" id="btn-salvar-cliente">
+                                <i class="fa-solid fa-user-plus"></i> Guardar Ficha
+                            </button>
                         </div>
                     </div>
+
                     <div class="panel">
                         <div class="panel-header">
-                            <h3><i class="fa-solid fa-users-rectangle"></i> Listagem Geral de Clientes</h3>
+                            <h3>Base de Dados de Clientes</h3>
                         </div>
-                        <div class="table-responsive">
+                        <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
                                         <th>Nome</th>
-                                        <th>Telemóvel</th>
-                                        <th>Frequência</th>
-                                        <th>Tempo</th>
-                                        <th style="text-align:right;">Gerir</th>
+                                        <th>Contacto</th>
+                                        <th>Configuração</th>
+                                        <th style="text-align: right;">Opções</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tabela-clientes"></tbody>
+                                <tbody id="tabela-clientes-lista">
+                                    </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <div id="precos-tab" class="section">
-                    <div class="help-box">
-                        <i class="fa-solid fa-plus-circle"></i>
-                        <p>Cria aqui o teu Menu de Serviços. Eles ficarão disponíveis na Agenda para facilitar o agendamento e os cálculos automáticos de faturação.</p>
-                    </div>
+                <div id="servicos" class="section">
                     <div class="panel">
                         <div class="panel-header">
-                            <h3><i class="fa-solid fa-tag"></i> Adicionar Novo Serviço à Tabela</h3>
+                            <h3>Adicionar Novo Serviço ao Catálogo</h3>
                         </div>
-                        <div class="form-grid" style="grid-template-columns: 2fr 1fr auto; align-items: end;">
+                        <div class="form-grid">
                             <div class="form-group">
-                                <label>Descrição do Serviço (O que fazes?)</label>
-                                <input type="text" id="novo-servico-nome" placeholder="Ex: Manicure Gel">
+                                <label>Designação do Serviço</label>
+                                <input type="text" id="input-nome-servico" placeholder="Ex: Unhas de Gel - Manutenção">
                             </div>
                             <div class="form-group">
-                                <label>Valor Fixo do Serviço (€)</label>
-                                <input type="number" id="novo-servico-preco" step="0.5" placeholder="Ex: 15.00">
+                                <label>Valor do Serviço (€)</label>
+                                <input type="number" id="input-preco-servico" placeholder="0.00">
                             </div>
-                            <div class="form-group">
-                                <button class="btn-primary" onclick="salvarServico()" style="height: 52px;"><i class="fa-solid fa-plus"></i> Adicionar</button>
-                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end;">
+                            <button class="btn-primary" onclick="salvarServico()">
+                                <i class="fa-solid fa-plus"></i> Integrar no Catálogo
+                            </button>
                         </div>
                     </div>
+
                     <div class="panel">
-                        <div class="table-responsive">
+                        <div class="panel-header">
+                            <h3>Serviços Ativos</h3>
+                        </div>
+                        <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Descrição do Serviço</th>
-                                        <th>Valor Base Fixo</th>
-                                        <th style="text-align:right;">Ações</th>
+                                        <th>Serviço</th>
+                                        <th>Preço (€)</th>
+                                        <th style="text-align: right;">Gestão</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tabela-precos"></tbody>
+                                <tbody id="tabela-servicos-lista">
+                                    </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
                 <div id="faturacao" class="section">
-                    <div class="dashboard-cards" style="grid-template-columns: 1fr;">
-                        <div class="card" style="flex-direction: row; justify-content: space-between; align-items: center; background: var(--gold-light); border: 1px solid var(--gold-primary); box-shadow: var(--shadow-hover);">
-                            <div>
-                                <h3 style="color: var(--gold-text); margin-bottom: 5px; font-weight: 700;">Total Bruto Faturado no Mês</h3>
-                                <div class="value" id="total-faturado-mes" style="color: var(--gold-text);">0.00 €</div>
-                            </div>
-                            <div>
-                                <span class="didactic-text" style="margin-bottom: 8px;">Escolhe o mês para analisar os teus ganhos:</span>
-                                <input type="month" id="input-mes" onchange="renderFaturacao()" style="background: #FFF; border: 2px solid var(--gold-primary); padding: 12px 20px; font-weight: 700;">
-                            </div>
-                        </div>
-                    </div>
                     <div class="panel">
                         <div class="panel-header">
-                            <h3><i class="fa-solid fa-chart-line"></i> Histórico Detalhado de Receita</h3>
+                            <h3>Controle de Faturação</h3>
+                            <input type="month" id="input-mes" onchange="renderFaturacao()">
                         </div>
-                        <div class="table-responsive">
+                        <div style="background: var(--bg-app); padding: 1.5rem; border-radius: var(--radius-md); text-align: center; margin-bottom: 2rem; border: 1.5px dashed var(--gold-primary);">
+                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">FATURAÇÃO TOTAL DO MÊS</div>
+                            <div id="total-faturado-mes" style="font-size: 2.8rem; font-weight: 800; color: var(--gold-primary);">- €</div>
+                        </div>
+                        <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Cliente Atendida</th>
+                                        <th>Cliente</th>
                                         <th>Serviço Realizado</th>
-                                        <th>Valor Cobrado</th>
-                                        <th style="text-align:right;">Apagar Erro</th>
+                                        <th>Valor Liquido</th>
+                                        <th style="text-align: right;">Ações</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tabela-faturacao"></tbody>
+                                <tbody id="tabela-faturacao-lista">
+                                    </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
                 <div id="config" class="section">
-                    <div class="help-box">
-                        <i class="fa-solid fa-wrench"></i>
-                        <p>Estas definições ajudam o sistema a calcular automaticamente se ainda tens vagas durante o mês no teu Painel Inicial.</p>
-                    </div>
                     <div class="panel">
                         <div class="panel-header">
-                            <h3><i class="fa-regular fa-clock"></i> Parâmetros do teu Horário de Trabalho Útil</h3>
+                            <h3><i class="fa-solid fa-sliders"></i> Horário Base Profissional</h3>
                         </div>
                         <div class="form-grid">
                             <div class="form-group">
-                                <label>Quantas horas úteis trabalhas por dia?</label>
-                                <input type="number" id="config-horas-dia" placeholder="Ex: 8">
-                                <span class="didactic-text">Tempo total que estás disponível para clientes.</span>
+                                <label>Horas de Trabalho/Dia</label>
+                                <input type="number" id="config-horas-dia" value="8">
+                                <span class="didactic-text">Número de horas que dedica à atividade diariamente.</span>
                             </div>
                             <div class="form-group">
-                                <label>Quantos dias úteis trabalhas por semana?</label>
-                                <input type="number" id="config-dias-semana" placeholder="Ex: 5">
-                                <span class="didactic-text">Por exemplo, de segunda a sexta são 5 dias.</span>
-                            </div>
-                            <div class="form-group" style="grid-column: 1 / -1; margin-top: 10px;">
-                                <button class="btn-primary" onclick="salvarConfig()"><i class="fa-solid fa-rotate"></i> Atualizar o meu horário base</button>
+                                <label>Dias Úteis/Semana</label>
+                                <input type="number" id="config-dias-semana" value="5">
+                                <span class="didactic-text">Quantos dias trabalha por semana.</span>
                             </div>
                         </div>
-                    </div>
-                    <div class="panel" style="background: #FFF5F5; border-color: #FCA5A5;">
-                        <div class="panel-header" style="border-bottom-color: #FECACA;">
-                            <h3 style="color: #DC2626;"><i class="fa-solid fa-lock"></i> Segurança da Tua Conta Corporativa</h3>
+                        <div style="display: flex; justify-content: flex-end;">
+                            <button class="btn-primary" onclick="salvarConfig()">
+                                <i class="fa-solid fa-floppy-disk"></i> Atualizar Parâmetros Corporativos
+                            </button>
                         </div>
-                        <p style="color: #991B1B; margin-bottom: 1.5rem; font-size: 0.95rem;">Termina a tua sessão sempre que deixares o computador para protegeres os teus dados financeiros e de clientes.</p>
-                        <button class="btn-secondary" onclick="fazerLogout()" style="color: #DC2626; border-color: #FCA5A5; background: #FFF;"><i class="fa-solid fa-power-off"></i> Sair em Segurança</button>
                     </div>
                 </div>
+
             </main>
         </div>
     </div>
 
     <script>
-        const SUPABASE_URL = "https://bxqlqexumitvhzbuuhpj.supabase.co";
+        // CONFIGURAÇÕES SUPABASE
+        const SUPABASE_URL = "https://bxqlqexumitvhzbuuhpj.supabase.co"; 
         const SUPABASE_KEY = "sb_publishable_3fQhn8sBTNDXEjpk3SAPXQ_UddrAIH6";
-        const supabaseDB = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        
-        let clientes = [];
-        let faturacaoDB = [];
-        let agendaDB = [];
-        let servicosDB = [];
-        let idEmEdicao = null;
-        let idServicoEdicao = null;
-        let config = { id: 1, horas_dia: 8, dias_semana: 5 };
+        const supabaseDB = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Mostrar a data
-        const opcoesData = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-        document.getElementById('data-hoje').innerText = new Date().toLocaleDateString('pt-PT', opcoesData).replace(/^\w/, c => c.toUpperCase());
+        // ESTADO DA APLICAÇÃO
+        let clientes = []; 
+        let agenda = []; 
+        let servicos = []; 
+        let faturacao = [];
+        let configGlobal = { horas_dia: 8, dias_semana: 5 };
+        let idClienteEmEdicao = null;
 
-        // Verificar o login
-        window.onload = async function() { 
-            const { data: { session } } = await supabaseDB.auth.getSession(); 
+        // INICIALIZAÇÃO
+        window.onload = async () => {
+            const { data: { session } } = await supabaseDB.auth.getSession();
             if (session) {
-                entrarNoApp(); 
+                iniciarInterface();
             }
+            atualizarRelogio();
+            setInterval(atualizarRelogio, 1000);
         };
 
-        // Fazer login
-        async function verificarLogin() { 
-            const email = document.getElementById('input-email').value; 
-            const password = document.getElementById('input-password').value; 
+        function atualizarRelogio() {
+            const agora = new Date();
+            const relogio = document.getElementById('relogio');
+            const dataHoje = document.getElementById('data-hoje');
             
-            mostrarLoading(true); 
-            
-            const { error } = await supabaseDB.auth.signInWithPassword({ email, password }); 
-            
-            if (error) { 
-                mostrarLoading(false); 
-                alert("Ups! O email corporativo ou a palavra-passe não estão corretos. Tenta novamente."); 
-            } else { 
-                entrarNoApp(); 
-            } 
+            if (relogio) relogio.innerText = agora.toLocaleTimeString('pt-PT');
+            if (dataHoje) dataHoje.innerText = agora.toLocaleDateString('pt-PT', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
         }
 
-        // Entrar
-        function entrarNoApp() { 
-            document.getElementById('login-screen').style.display = 'none'; 
-            document.getElementById('app-interface').style.display = 'flex'; 
-            sincronizarComServidor(); 
-        }
+        // AUTENTICAÇÃO
+        async function autenticar() {
+            mostrarLoading(true);
+            const email = document.getElementById('email-login').value;
+            const pass = document.getElementById('pass-login').value;
 
-        // Sair
-        async function fazerLogout() { 
-            await supabaseDB.auth.signOut(); 
-            window.location.reload(); 
-        }
+            const { data, error } = await supabaseDB.auth.signInWithPassword({
+                email: email,
+                password: pass,
+            });
 
-        // Ecrã de carregamento
-        function mostrarLoading(m) { 
-            document.getElementById('loading-screen').style.display = m ? 'flex' : 'none'; 
-        }
-
-        // Sincronizar Tudo
-        async function sincronizarComServidor() { 
-            mostrarLoading(true); 
-            
-            const [resC, resF, resA, resConf, resS] = await Promise.all([ 
-                supabaseDB.from('clientes').select('*').order('nome'), 
-                supabaseDB.from('faturacao').select('*'), 
-                supabaseDB.from('agenda').select('*'), 
-                supabaseDB.from('config').select('*').eq('id', 1).single(), 
-                supabaseDB.from('servicos').select('*').order('nome') 
-            ]); 
-            
-            clientes = resC.data || []; 
-            faturacaoDB = resF.data || []; 
-            agendaDB = resA.data || []; 
-            servicosDB = resS.data || []; 
-            
-            if(resConf.data) {
-                config = resConf.data;
-            } 
-            
-            renderTudo(); 
-            mostrarLoading(false); 
-        }
-
-        // Mostrar tudo no site
-        function renderTudo() { 
-            const tbodyC = document.getElementById('tabela-clientes'); 
-            tbodyC.innerHTML = ''; 
-            let horasMes = 0; 
-            
-            const selA = document.getElementById('select-cliente-agenda');
-            const selS = document.getElementById('select-servico-agenda'); 
-            
-            selA.innerHTML = '<option value="">-- Quem é a cliente? --</option>'; 
-            selS.innerHTML = '<option value="">-- Que serviço vai fazer? --</option>'; 
-            
-            clientes.forEach(c => { 
-                horasMes += (4 / c.frequencia) * c.duracao; 
-                selA.innerHTML += `<option value="${c.id}">${c.nome}</option>`; 
-                
-                let linha = `
-                <tr>
-                    <td style="font-weight: 600;">${c.nome}</td>
-                    <td>${c.telefone || 'Sem contacto'}</td>
-                    <td><span class="badge badge-gold">${c.frequencia} Sem.</span></td>
-                    <td>${c.duracao}h</td>
-                    <td style="text-align:right;">
-                        <button class="btn-secondary btn-icon" onclick="carregarParaEdicao('${c.id}')"><i class="fa-solid fa-user-pen"></i></button> 
-                        <button class="btn-secondary btn-icon" style="color:#71717a; border-color:transparent;" onmouseover="this.style.color='#DC2626'" onmouseout="this.style.color='#71717a'" onclick="apagarCliente('${c.id}')"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>`;
-                
-                tbodyC.innerHTML += linha; 
-            }); 
-            
-            servicosDB.forEach(s => { 
-                selS.innerHTML += `<option value="${s.nome}" data-preco="${s.preco}">${s.nome} (${s.preco}€)</option>`; 
-            }); 
-            
-            renderPrecos(); 
-            
-            const totalHoras = config.horas_dia * config.dias_semana * 4; 
-            document.getElementById('dash-total-clientes').innerText = clientes.length; 
-            document.getElementById('dash-horas-ocupadas').innerText = horasMes.toFixed(1) + 'h'; 
-            document.getElementById('dash-vagas').innerText = Math.max(0, totalHoras - horasMes).toFixed(1) + 'h'; 
-            
-            const perc = Math.min(100, (horasMes / totalHoras) * 100); 
-            document.getElementById('barra-ocupacao').style.width = perc + '%'; 
-            document.getElementById('texto-ocupacao').innerText = perc.toFixed(1) + '%'; 
-            
-            renderAgenda(); 
-            renderFaturacao(); 
-        }
-
-        // Tabela Preços
-        function renderPrecos() { 
-            const tbody = document.getElementById('tabela-precos'); 
-            tbody.innerHTML = ''; 
-            
-            if (servicosDB.length === 0) { 
-                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 2.5rem; background: var(--gold-light); border-radius: 8px;">Ainda não adicionaste serviços ao teu menu corporativo. Usa o formulário acima para começar!</td></tr>`; 
-            } 
-            
-            servicosDB.forEach(s => { 
-                let linha = `
-                <tr>
-                    <td style="font-weight:600;">${s.nome}</td>
-                    <td><span class="badge badge-green">${s.preco.toFixed(2)} €</span></td>
-                    <td style="text-align:right;">
-                        <button class="btn-secondary btn-icon" onclick="carregarServicoEdicao('${s.id}')"><i class="fa-solid fa-pen"></i></button> 
-                        <button class="btn-secondary btn-icon" style="color:#71717a; border-color:transparent;" onmouseover="this.style.color='#DC2626'" onmouseout="this.style.color='#71717a'" onclick="apagarServico('${s.id}')"><i class="fa-solid fa-trash-can"></i></button>
-                    </td>
-                </tr>`;
-                
-                tbody.innerHTML += linha; 
-            }); 
-        }
-
-        async function salvarServico() { 
-            const n = document.getElementById('novo-servico-nome').value;
-            const p = parseFloat(document.getElementById('novo-servico-preco').value); 
-            
-            if(!n || isNaN(p)) { 
-                alert("Tens de preencher o nome e o preço (apenas números) corretamente para guardar o serviço."); 
-                return; 
-            } 
-            
-            mostrarLoading(true); 
-            
-            if(idServicoEdicao) {
-                await supabaseDB.from('servicos').update({nome:n, preco:p}).eq('id', idServicoEdicao); 
+            if (error) {
+                alert("Erro de autenticação: Credenciais corporativas inválidas!");
+                mostrarLoading(false);
             } else {
-                await supabaseDB.from('servicos').insert([{nome:n, preco:p}]); 
+                iniciarInterface();
             }
+        }
+
+        async function logout() {
+            await supabaseDB.auth.signOut();
+            location.reload();
+        }
+
+        async function iniciarInterface() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('app-interface').style.display = 'flex';
+            await sincronizarComServidor();
+        }
+
+        function mostrarLoading(status) {
+            document.getElementById('loading-screen').style.display = status ? 'flex' : 'none';
+        }
+
+        // SINCRONIZAÇÃO DE DADOS
+        async function sincronizarComServidor() {
+            mostrarLoading(true);
+            try {
+                const [c, a, s, f, cfg] = await Promise.all([
+                    supabaseDB.from('clientes').select('*').order('nome'),
+                    supabaseDB.from('agenda').select('*'),
+                    supabaseDB.from('servicos').select('*').order('nome'),
+                    supabaseDB.from('faturacao').select('*'),
+                    supabaseDB.from('config').select('*').eq('id', 1).single()
+                ]);
+
+                clientes = c.data || [];
+                agenda = a.data || [];
+                servicos = s.data || [];
+                faturacao = f.data || [];
+                
+                if (cfg.data) {
+                    configGlobal = cfg.data;
+                    document.getElementById('config-horas-dia').value = configGlobal.horas_dia;
+                    document.getElementById('config-dias-semana').value = configGlobal.dias_semana;
+                }
+
+                renderDashboard();
+                renderClientes();
+                renderServicos();
+                renderListaAgenda();
+                renderFaturacao();
+                popularSelectsAgenda();
+
+            } catch (error) {
+                console.error("Erro crítico de sincronização:", error);
+            }
+            mostrarLoading(false);
+        }
+
+        // RENDERERS (Vistas)
+        function renderDashboard() {
+            const totalC = clientes.length;
             
-            idServicoEdicao = null; 
-            document.getElementById('novo-servico-nome').value = ''; 
-            document.getElementById('novo-servico-preco').value = ''; 
+            // Cálculo de Ocupação (Métrica de Gestão)
+            let horasOcupadasMes = 0;
+            clientes.forEach(c => {
+                const sessoesPorMes = 4 / c.frequencia;
+                horasOcupadasMes += (sessoesPorMes * c.duracao);
+            });
+
+            const horasDisponiveisMes = configGlobal.horas_dia * configGlobal.dias_semana * 4;
+            const vagasLivres = Math.max(0, horasDisponiveisMes - horasOcupadasMes);
+            const percentagemOcupacao = (horasOcupadasMes / horasDisponiveisMes) * 100;
+
+            document.getElementById('dash-total-clientes').innerText = totalC;
+            document.getElementById('dash-ocupacao').innerText = horasOcupadasMes.toFixed(1) + 'h';
+            document.getElementById('dash-vagas').innerText = vagasLivres.toFixed(1) + 'h';
+            document.getElementById('prod-media').innerText = percentagemOcupacao.toFixed(0) + '%';
+            document.getElementById('prod-dias').innerText = configGlobal.dias_semana * 4;
+        }
+
+        function renderClientes() {
+            const tbody = document.getElementById('tabela-clientes-lista');
+            tbody.innerHTML = '';
+
+            clientes.forEach(c => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${c.nome}</strong></td>
+                        <td>${c.telefone}</td>
+                        <td>
+                            <div class="badge badge-gold"><i class="fa-solid fa-repeat"></i> ${c.frequencia} sem.</div>
+                            <div class="badge badge-time"><i class="fa-solid fa-clock"></i> ${c.duracao}h</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <button class="btn-secondary" onclick="editarCliente('${c.id}')">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button class="btn-secondary" onclick="apagarCliente('${c.id}')" style="color:#EF4444;">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderServicos() {
+            const tbody = document.getElementById('tabela-servicos-lista');
+            tbody.innerHTML = '';
+            servicos.forEach(s => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${s.nome}</td>
+                        <td><strong>${s.preco.toFixed(2)} €</strong></td>
+                        <td style="text-align: right;">
+                            <button class="btn-secondary" onclick="apagarServico('${s.id}')" style="color:#EF4444;">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderListaAgenda() {
+            const dataSel = document.getElementById('input-data-agenda').value;
+            const tbody = document.getElementById('tabela-agenda-lista');
+            const visualData = document.getElementById('data-selecionada');
+            tbody.innerHTML = '';
+
+            if (!dataSel) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Selecione uma data para visualizar as marcações...</td></tr>';
+                return;
+            }
+
+            visualData.innerText = new Date(dataSel).toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' });
+
+            const agendamentosDoDia = agenda.filter(a => a.dia === dataSel).sort((x, y) => x.hora.localeCompare(y.hora));
+
+            if (agendamentosDoDia.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 2rem;">Não existem marcações registadas para este dia profissional.</td></tr>';
+            } else {
+                agendamentosDoDia.forEach(a => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${a.hora}</strong></td>
+                            <td>${a.nome_snapshot}</td>
+                            <td><span class="badge badge-gold">${a.servico}</span></td>
+                            <td style="text-align: right;">
+                                <button class="btn-secondary" onclick="apagarAgenda('${a.id}')" style="color:#EF4444;">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        function renderFaturacao() {
+            const mesSel = document.getElementById('input-mes').value;
+            const tbody = document.getElementById('tabela-faturacao-lista');
+            const totalMesLabel = document.getElementById('total-faturado-mes');
+            tbody.innerHTML = '';
+
+            const registrosDoMes = faturacao.filter(f => f.mes === mesSel);
+            let total = 0;
+
+            registrosDoMes.forEach(r => {
+                total += r.preco;
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${r.nome_snapshot}</td>
+                        <td>${r.servico_snapshot}</td>
+                        <td><strong>${r.preco.toFixed(2)} €</strong></td>
+                        <td style="text-align: right;">
+                            <button class="btn-secondary" onclick="apagarFaturacao('${r.id}')" style="color:#EF4444;">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            totalMesLabel.innerText = total.toFixed(2) + ' €';
+        }
+
+        function popularSelectsAgenda() {
+            const selC = document.getElementById('select-cliente-agenda');
+            const selS = document.getElementById('select-servico-agenda');
             
-            sincronizarComServidor(); 
+            selC.innerHTML = '<option value="">Escolher Cliente Profissional...</option>';
+            clientes.forEach(c => selC.innerHTML += `<option value="${c.id}">${c.nome}</option>`);
+
+            selS.innerHTML = '<option value="">Selecionar Serviço...</option>';
+            servicos.forEach(s => selS.innerHTML += `<option value="${s.nome}" data-preco="${s.preco}">${s.nome} (${s.preco}€)</option>`);
         }
 
-        function carregarServicoEdicao(id) { 
-            const s = servicosDB.find(x => x.id == id); 
-            document.getElementById('novo-servico-nome').value = s.nome; 
-            document.getElementById('novo-servico-preco').value = s.preco; 
-            idServicoEdicao = id; 
-            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+        // ACÇÕES (Funções Corporativas)
+        async function salvarCliente() {
+            const nome = document.getElementById('input-nome-cliente').value;
+            const tel = document.getElementById('input-tel-cliente').value;
+            const freq = parseFloat(document.getElementById('input-frequencia-cliente').value);
+            const dur = parseFloat(document.getElementById('input-duracao-cliente').value);
+
+            if (!nome || !tel) return alert("Por favor, preencha o nome e contacto da cliente.");
+
+            if (idClienteEmEdicao) {
+                await supabaseDB.from('clientes').update({ nome, telefone: tel, frequencia: freq, duracao: dur }).eq('id', idClienteEmEdicao);
+            } else {
+                await supabaseDB.from('clientes').insert([{ nome, telefone: tel, frequencia: freq, duracao: dur }]);
+            }
+
+            resetFormCliente();
+            sincronizarComServidor();
         }
 
-        async function apagarServico(id) { 
-            if(confirm("Tens a certeza absoluta que queres remover este serviço da tua tabela de menu? Isto não apagará os registos financeiros passados.")) { 
-                await supabaseDB.from('servicos').delete().eq('id', id); 
-                sincronizarComServidor(); 
-            } 
+        function editarCliente(id) {
+            const c = clientes.find(x => x.id === id);
+            idClienteEmEdicao = id;
+            document.getElementById('input-nome-cliente').value = c.nome;
+            document.getElementById('input-tel-cliente').value = c.telefone;
+            document.getElementById('input-frequencia-cliente').value = c.frequencia;
+            document.getElementById('input-duracao-cliente').value = c.duracao;
+            
+            document.getElementById('titulo-form-cliente').innerText = "Editar Ficha de Cliente";
+            document.getElementById('btn-salvar-cliente').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Atualizar Ficha';
+            document.getElementById('btn-cancelar-edit-cliente').style.display = 'inline-block';
         }
 
-        // Tabela Agenda
-        function renderAgenda() { 
+        function resetFormCliente() {
+            idClienteEmEdicao = null;
+            document.getElementById('input-nome-cliente').value = '';
+            document.getElementById('input-tel-cliente').value = '';
+            document.getElementById('input-frequencia-cliente').value = '4';
+            document.getElementById('input-duracao-cliente').value = '1.5';
+            
+            document.getElementById('titulo-form-cliente').innerText = "Registar Nova Cliente";
+            document.getElementById('btn-salvar-cliente').innerHTML = '<i class="fa-solid fa-user-plus"></i> Guardar Ficha';
+            document.getElementById('btn-cancelar-edit-cliente').style.display = 'none';
+        }
+
+        async function apagarCliente(id) {
+            if (confirm("Deseja eliminar esta ficha de cliente permanentemente?")) {
+                await supabaseDB.from('clientes').delete().eq('id', id);
+                sincronizarComServidor();
+            }
+        }
+
+        async function salvarServico() {
+            const nome = document.getElementById('input-nome-servico').value;
+            const preco = parseFloat(document.getElementById('input-preco-servico').value);
+
+            if (!nome || !preco) return alert("Defina o nome e o valor do serviço profissional.");
+
+            await supabaseDB.from('servicos').insert([{ nome, preco }]);
+            document.getElementById('input-nome-servico').value = '';
+            document.getElementById('input-preco-servico').value = '';
+            sincronizarComServidor();
+        }
+
+        async function apagarServico(id) {
+            await supabaseDB.from('servicos').delete().eq('id', id);
+            sincronizarComServidor();
+        }
+
+        async function salvarAgendamento() {
             const dia = document.getElementById('input-data-agenda').value;
-            const tbody = document.getElementById('tabela-agenda'); 
-            tbody.innerHTML = ''; 
-            
-            const dataFormatada = dia.split('-').reverse().slice(0,2).join('/'); 
-            const agendaDoDia = agendaDB.filter(a => a.dia === dia).sort((x,y) => x.hora.localeCompare(y.hora)); 
-            
-            if (agendaDoDia.length === 0) { 
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-muted); padding: 2.5rem; background: #F8FAFC; border-radius: 8px;">Ainda não tens marcações profissionais agendadas para este dia.</td></tr>`; 
-            } 
-            
-            agendaDoDia.forEach(m => { 
-                const numLimpo = m.telefone_snapshot ? m.telefone_snapshot.replace(/\s/g, '') : ''; 
-                const textoChat = `Alô ${m.nome_snapshot}, envio mensagem para recordar a marcação corporativa de dia ${dataFormatada} às ${m.hora}. Agradeço confirmação de agenda. Beijinho professional! ✨`; 
-                const linkWpp = numLimpo ? `<a href="https://wa.me/351${numLimpo}?text=${encodeURIComponent(textoChat)}" target="_blank" style="color:#059669; font-weight: 700; text-decoration:none;"><i class="fa-brands fa-whatsapp"></i> Enviar Lembrete</a>` : '<span style="color:#9CA3AF; font-size:0.85rem; font-style:italic;">Sem contacto profissional</span>'; 
-                
-                let linha = `
-                <tr>
-                    <td style="font-weight:700; color: var(--gold-text);">${m.hora}</td>
-                    <td>${m.nome_snapshot}</td>
-                    <td><span class="badge badge-gold">${m.servico}</span></td>
-                    <td>${linkWpp}</td>
-                    <td style="text-align:right;">
-                        <button class="btn-secondary btn-icon" style="color:#71717a; border-color:transparent;" onmouseover="this.style.color='#DC2626'" onmouseout="this.style.color='#71717a'" onclick="apagarAgenda('${m.id}')"><i class="fa-solid fa-trash-xmark"></i></button>
-                    </td>
-                </tr>`;
-                
-                tbody.innerHTML += linha; 
-            }); 
+            const hora = document.getElementById('input-hora-agenda').value;
+            const idC = document.getElementById('select-cliente-agenda').value;
+            const selS = document.getElementById('select-servico-agenda');
+            const servicoNome = selS.value;
+            const preco = parseFloat(selS.options[selS.selectedIndex].dataset.preco);
+
+            if (!dia || !hora || !idC || !servicoNome) return alert("Preencha todos os parâmetros da marcação.");
+
+            const cliente = clientes.find(c => c.id === idC);
+
+            // Gravar na Agenda
+            await supabaseDB.from('agenda').insert([{
+                dia, hora, id_cliente: idC, nome_snapshot: cliente.nome, servico: servicoNome
+            }]);
+
+            // Gravar na Faturação (Previsão de Receita)
+            await supabaseDB.from('faturacao').insert([{
+                mes: dia.substring(0, 7), 
+                preco: preco, 
+                id_cliente: idC, 
+                nome_snapshot: cliente.nome, 
+                servico_snapshot: servicoNome
+            }]);
+
+            document.getElementById('input-hora-agenda').value = '';
+            sincronizarComServidor();
+            alert("Agendamento profissional concluído com sucesso!");
         }
 
-        // Tabela Faturação
-        function renderFaturacao() { 
-            const mes = document.getElementById('input-mes').value;
-            const tbody = document.getElementById('tabela-faturacao'); 
-            tbody.innerHTML = ''; 
-            let total = 0; 
-            
-            const fatMes = faturacaoDB.filter(f => f.mes === mes); 
-            
-            if(fatMes.length === 0) { 
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 2.5rem; background: var(--gold-light); border-radius: 8px;">Ainda não existem valores financeiros faturados e registados para este mês corporativo.</td></tr>`; 
-            } 
-            
-            fatMes.forEach(r => { 
-                total += r.preco; 
-                
-                let linha = `
-                <tr>
-                    <td>${r.nome_snapshot}</td>
-                    <td><span class="badge">${r.servico_snapshot || 'Serviço antigo'}</span></td>
-                    <td><span class="badge badge-green">${r.preco.toFixed(2)} €</span></td>
-                    <td style="text-align:right;">
-                        <button class="btn-secondary btn-icon" style="color:#71717a; border-color:transparent;" onmouseover="this.style.color='#DC2626'" onmouseout="this.style.color='#71717a'" onclick="apagarFaturacao('${r.id}')"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>`;
-                
-                tbody.innerHTML += linha; 
-            }); 
-            
-            document.getElementById('total-faturado-mes').innerText = total.toFixed(2) + ' €'; 
+        async function apagarAgenda(id) {
+            await supabaseDB.from('agenda').delete().eq('id', id);
+            sincronizarComServidor();
         }
 
-        async function addAgenda() { 
-            const d = document.getElementById('input-data-agenda').value;
-            const h = document.getElementById('input-hora-agenda').value; 
-            const selS = document.getElementById('select-servico-agenda'); 
-            const sNome = selS.value;
-            const sPreco = parseFloat(selS.options[selS.selectedIndex]?.getAttribute('data-preco')); 
-            const idC = document.getElementById('select-cliente-agenda').value; 
-            
-            if(!d || !h || !idC || !sNome) { 
-                alert("Ups! Falta preencher alguns dados obrigatórios para concluir o agendamento corporativo profissional."); 
-                return; 
-            } 
-            
-            mostrarLoading(true); 
-            
-            const c = clientes.find(x => x.id === idC);
-            const mesAtual = d.substring(0, 7); 
-            
-            await supabaseDB.from('agenda').insert([{ dia:d, hora:h, servico:sNome, id_cliente:idC, nome_snapshot:c.nome, telefone_snapshot:c.telefone }]); 
-            await supabaseDB.from('faturacao').insert([{ mes: mesAtual, preco: sPreco, id_cliente: idC, nome_snapshot: c.nome, servico_snapshot: sNome }]); 
-            
-            sincronizarComServidor(); 
+        async function apagarFaturacao(id) {
+            await supabaseDB.from('faturacao').delete().eq('id', id);
+            sincronizarComServidor();
         }
 
-        async function salvarCliente() { 
-            const n = document.getElementById('nome').value;
-            const t = document.getElementById('telefone').value; 
-            const f = parseInt(document.getElementById('frequencia').value);
-            const d = parseFloat(document.getElementById('duracao').value); 
-            
-            if(!n || isNaN(d)) { 
-                alert("Por favor, preenche pelo menos o nome da cliente para criares a ficha profissional."); 
-                return; 
-            } 
-            
-            mostrarLoading(true); 
-            
-            if(idEmEdicao) {
-                await supabaseDB.from('clientes').update({nome:n, telefone:t, frequencia:f, duracao:d}).eq('id', idEmEdicao); 
-            } else {
-                await supabaseDB.from('clientes').insert([{nome:n, telefone:t, frequencia:f, duracao:d}]); 
-            }
-            
-            cancelarEdicao(); 
-            sincronizarComServidor(); 
-        }
-
-        async function apagarCliente(id) { 
-            if(confirm("Tens a certeza absoluta que queres apagar esta ficha de cliente profissional? Isto não apagará os agendamentos ou finanças passadas associados.")) { 
-                mostrarLoading(true); 
-                await supabaseDB.from('clientes').delete().eq('id', id); 
-                sincronizarComServidor(); 
-            } 
-        }
-
-        function carregarParaEdicao(id) { 
-            const c = clientes.find(x => x.id === id); 
-            document.getElementById('nome').value = c.nome; 
-            document.getElementById('telefone').value = c.telefone; 
-            document.getElementById('frequencia').value = c.frequencia; 
-            document.getElementById('duracao').value = c.duracao; 
-            
-            idEmEdicao = id; 
-            document.getElementById('btn-cancelar-edicao').style.display = 'inline-flex'; 
-            document.getElementById('btn-salvar-cliente').innerHTML = '<i class="fa-solid fa-save"></i> Atualizar Dados da Cliente'; 
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' }); 
-        }
-
-        function cancelarEdicao() { 
-            idEmEdicao = null; 
-            document.getElementById('nome').value = ''; 
-            document.getElementById('telefone').value = ''; 
-            document.getElementById('btn-cancelar-edicao').style.display = 'none'; 
-            document.getElementById('btn-salvar-cliente').innerHTML = '<i class="fa-solid fa-user-plus"></i> Guardar Ficha Corporativa'; 
-        }
-
-        async function apagarAgenda(id) { 
-            await supabaseDB.from('agenda').delete().eq('id', id); 
-            sincronizarComServidor(); 
-        }
-
-        async function apagarFaturacao(id) { 
-            await supabaseDB.from('faturacao').delete().eq('id', id); 
-            sincronizarComServidor(); 
-        }
-
-        async function salvarConfig() { 
+        async function salvarConfig() {
             const h = document.getElementById('config-horas-dia').value;
-            const d = document.getElementById('config-dias-semana').value; 
+            const d = document.getElementById('config-dias-semana').value;
             
-            await supabaseDB.from('config').update({horas_dia:h, dias_semana:d}).eq('id', 1); 
+            await supabaseDB.from('config').update({horas_dia:h, dias_semana:d}).eq('id', 1);
             
-            sincronizarComServidor(); 
-            alert("Parâmetros corporativos de horário atualizados com sucesso profissional!"); 
+            sincronizarComServidor();
+            alert("Parâmetros corporativos de horário atualizados com sucesso profissional!");
         }
 
-        function mudarAba(id, titulo, el) { 
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); 
-            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active')); 
+        function mudarAba(id, titulo, el) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
             
-            document.getElementById(id).classList.add('active'); 
-            el.classList.add('active'); 
-            document.getElementById('page-title').innerText = titulo; 
+            document.getElementById(id).classList.add('active');
+            el.classList.add('active');
+            document.getElementById('page-title').innerText = titulo;
             
-            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Definir a data base dos inputs para hoje
-        const hoje = new Date(); 
-        document.getElementById('input-mes').value = hoje.getFullYear() + "-" + String(hoje.getMonth() + 1).padStart(2, '0'); 
-        document.getElementById('input-data-agenda').value = hoje.toISOString().split('T')[0];
+        const hojeObj = new Date(); 
+        document.getElementById('input-mes').value = hojeObj.getFullYear() + "-" + String(hojeObj.getMonth() + 1).padStart(2, '0'); 
+        document.getElementById('input-data-agenda').value = hojeObj.toISOString().split('T')[0];
     </script>
 </body>
 </html>
-
-
-
