@@ -136,7 +136,7 @@
             document.getElementById('dias-calendario').style.display = 'none';
 
             // Puxa apenas as datas
-            const { data, error } = await supabaseDB.from('agenda').select('dia');
+            const { data, error } = await supabaseDB.from('vista_agenda_publica').select('dia');
             
             if (data) {
                 agendaDB = data;
@@ -203,4 +203,5 @@
     </script>
 </body>
 </html>
+
 
