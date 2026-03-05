@@ -19,14 +19,13 @@
             --border-light: #F1F5F9;
             --gold-primary: #D4AF37;
             
-            /* Cores do Semáforo (Tons Pastel Elegantes) */
-            --color-green: #10B981; /* Verde esmeralda suave */
+            --color-green: #10B981;
             --bg-green: #ECFDF5;
-            --color-yellow: #F59E0B; /* Âmbar/Dourado */
+            --color-yellow: #F59E0B;
             --bg-yellow: #FFFBEB;
-            --color-red: #EF4444; /* Vermelho suave */
+            --color-red: #EF4444;
             --bg-red: #FEF2F2;
-            --color-grey: #CBD5E1; /* Dias passados ou indisponíveis */
+            --color-grey: #CBD5E1;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -35,13 +34,11 @@
 
         .container { width: 100%; max-width: 500px; background: var(--bg-panel); border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); padding: 2rem; border: 1px solid rgba(212, 175, 55, 0.15); }
 
-        /* Cabeçalho */
         .header { text-align: center; margin-bottom: 2rem; }
         .header img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold-primary); margin-bottom: 1rem; }
         .header h1 { font-size: 1.5rem; font-weight: 700; color: var(--text-main); }
         .header p { color: var(--text-muted); font-size: 0.95rem; margin-top: 5px; }
 
-        /* Legenda do Semáforo - Agora na vertical para acomodar o texto maior */
         .legend { display: flex; flex-direction: column; gap: 10px; margin-bottom: 2rem; background: #F8FAFC; padding: 1.2rem; border-radius: 12px; font-size: 0.9rem; font-weight: 600; }
         .legend-item { display: flex; align-items: center; gap: 12px; color: var(--text-main); }
         .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
@@ -49,29 +46,24 @@
         .dot.yellow { background: var(--color-yellow); box-shadow: 0 0 8px rgba(245, 158, 11, 0.4); }
         .dot.red { background: var(--color-red); }
 
-        /* Controlo do Calendário (Mês/Ano) */
         .calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
         .calendar-controls button { background: none; border: none; font-size: 1.2rem; color: var(--gold-primary); cursor: pointer; padding: 5px 10px; transition: transform 0.2s; }
         .calendar-controls button:hover { transform: scale(1.1); }
         .calendar-controls h2 { font-size: 1.2rem; font-weight: 700; text-transform: capitalize; }
 
-        /* Grelha do Calendário */
         .calendar { width: 100%; }
         .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 700; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; }
         .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
         
         .day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease; border: 1.5px solid transparent; }
         
-        /* Estados dos Dias */
         .day.empty { background: transparent; pointer-events: none; }
         .day.past { color: var(--color-grey); text-decoration: line-through; pointer-events: none; }
         
-        /* As cores mágicas do Semáforo */
         .day.green { background: var(--bg-green); color: var(--color-green); border-color: #A7F3D0; }
         .day.yellow { background: var(--bg-yellow); color: var(--color-yellow); border-color: #FDE68A; }
         .day.red { background: var(--bg-red); color: var(--color-red); border-color: #FECACA; opacity: 0.7; }
 
-        /* Botão de WhatsApp */
         .btn-whatsapp { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px; margin-top: 2rem; background: var(--text-main); color: #FFF; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; text-decoration: none; transition: background 0.3s; }
         .btn-whatsapp:hover { background: #000; }
         .btn-whatsapp i { font-size: 1.2rem; color: var(--gold-primary); }
@@ -105,8 +97,7 @@
                 <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
             </div>
             <div id="loading"><i class="fa-solid fa-spinner fa-spin"></i> A atualizar agenda...</div>
-            <div class="days" id="dias-calendario">
-                </div>
+            <div class="days" id="dias-calendario"></div>
         </div>
 
         <a href="https://wa.me/351900000000?text=Olá%20Mariana!%20Estive%20a%20ver%20o%20teu%20calendário%20e%20queria%20fazer%20uma%20marcação." target="_blank" class="btn-whatsapp">
@@ -115,17 +106,16 @@
     </div>
 
     <script>
-        // AS TUAS CHAVES DO SUPABASE
         const SUPABASE_URL = "https://bxqlqexumitvhzbuuhpj.supabase.co";
         const SUPABASE_KEY = "sb_publishable_3fQhn8sBTNDXEjpk3SAPXQ_UddrAIH6";
         const supabaseDB = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let dataAtual = new Date();
         let agendaDB = [];
+        let diasFechados = [];
 
-        // LÓGICA DO SEMÁFORO
-        const LIMITE_AMARELO = 3; // 3 ou mais marcações = Baixa Disponibilidade
-        const LIMITE_VERMELHO = 6; // 6 ou mais marcações = Sem Disponibilidade
+        const LIMITE_AMARELO = 3; 
+        const LIMITE_VERMELHO = 6; 
 
         window.onload = async function() {
             buscarAgenda();
@@ -135,12 +125,14 @@
             document.getElementById('loading').style.display = 'block';
             document.getElementById('dias-calendario').style.display = 'none';
 
-            // Puxa apenas as datas
-            const { data, error } = await supabaseDB.from('vista_agenda_publica').select('dia');
+            // Puxa a agenda e os dias de férias/bloqueados
+            const [resAgenda, resFechados] = await Promise.all([
+                supabaseDB.from('vista_agenda_publica').select('dia'),
+                supabaseDB.from('dias_fechados').select('dia')
+            ]);
             
-            if (data) {
-                agendaDB = data;
-            }
+            if (resAgenda.data) agendaDB = resAgenda.data;
+            if (resFechados.data) diasFechados = resFechados.data.map(d => d.dia);
             
             document.getElementById('loading').style.display = 'none';
             document.getElementById('dias-calendario').style.display = 'grid';
@@ -151,7 +143,6 @@
             const ano = dataAtual.getFullYear();
             const mes = dataAtual.getMonth();
 
-            // Formatar título do mês (ex: Novembro 2023)
             const nomeMes = dataAtual.toLocaleString('pt-PT', { month: 'long', year: 'numeric' });
             document.getElementById('mes-ano').innerText = nomeMes;
 
@@ -164,27 +155,27 @@
             const hoje = new Date();
             hoje.setHours(0,0,0,0);
 
-            // Quadrados em branco antes do dia 1
             for (let i = 0; i < primeiroDia; i++) {
                 grelha.innerHTML += `<div class="day empty"></div>`;
             }
 
-            // Quadrados dos dias do mês
             for (let dia = 1; dia <= totalDias; dia++) {
                 const dataLoop = new Date(ano, mes, dia);
                 const dataFormatada = `${ano}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
                 
-                // Contar quantas vezes esta data aparece no Supabase
                 const marcacoesNesteDia = agendaDB.filter(m => m.dia === dataFormatada).length;
 
                 let classeCor = 'green'; 
                 
-              if (dataLoop < hoje) {
-                    classeCor = 'past'; // Dia já passou
+                // REGRAS DE BLOQUEIO
+                if (dataLoop < hoje) {
+                    classeCor = 'past'; // Passado
                 } else if (dataLoop.getDay() === 0 || dataLoop.getDay() === 1) {
-                    classeCor = 'past'; // Domingos (0) e Segundas (1) ficam fechados/cinzentos
+                    classeCor = 'past'; // Domingos e Segundas
+                } else if (diasFechados.includes(dataFormatada)) {
+                    classeCor = 'past'; // Férias ou Dias Bloqueados manualmente
                 } else {
-                    // Semáforo ativo
+                    // SEMÁFORO
                     if (marcacoesNesteDia >= LIMITE_VERMELHO) {
                         classeCor = 'red';
                     } else if (marcacoesNesteDia >= LIMITE_AMARELO) {
@@ -203,6 +194,3 @@
     </script>
 </body>
 </html>
-
-
-
