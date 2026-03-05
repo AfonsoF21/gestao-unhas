@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GlowUp | Disponibilidade</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-app: #FAFAF9;
+            --bg-panel: #FFFFFF;
+            --text-main: #334155;
+            --text-muted: #64748B;
+            --border-light: #F1F5F9;
+            --gold-primary: #D4AF37;
+            
+            /* Cores do Semáforo (Tons Pastel Elegantes) */
+            --color-green: #10B981; /* Verde esmeralda suave */
+            --bg-green: #ECFDF5;
+            --color-yellow: #F59E0B; /* Âmbar/Dourado */
+            --bg-yellow: #FFFBEB;
+            --color-red: #EF4444; /* Vermelho suave */
+            --bg-red: #FEF2F2;
+            --color-grey: #CBD5E1; /* Dias passados ou indisponíveis */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        body { background-color: var(--bg-app); color: var(--text-main); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 2rem 1rem; }
+
+        .container { width: 100%; max-width: 500px; background: var(--bg-panel); border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); padding: 2rem; border: 1px solid rgba(212, 175, 55, 0.15); }
+
+        /* Cabeçalho */
+        .header { text-align: center; margin-bottom: 2rem; }
+        .header img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold-primary); margin-bottom: 1rem; }
+        .header h1 { font-size: 1.5rem; font-weight: 700; color: var(--text-main); }
+        .header p { color: var(--text-muted); font-size: 0.95rem; margin-top: 5px; }
+
+        /* Legenda do Semáforo */
+        .legend { display: flex; justify-content: space-between; margin-bottom: 2rem; background: #F8FAFC; padding: 1rem; border-radius: 12px; font-size: 0.85rem; font-weight: 600; }
+        .legend-item { display: flex; align-items: center; gap: 8px; color: var(--text-main); }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot.green { background: var(--color-green); box-shadow: 0 0 8px rgba(16, 185, 129, 0.4); }
+        .dot.yellow { background: var(--color-yellow); box-shadow: 0 0 8px rgba(245, 158, 11, 0.4); }
+        .dot.red { background: var(--color-red); }
+
+        /* Controlo do Calendário (Mês/Ano) */
+        .calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .calendar-controls button { background: none; border: none; font-size: 1.2rem; color: var(--gold-primary); cursor: pointer; padding: 5px 10px; transition: transform 0.2s; }
+        .calendar-controls button:hover { transform: scale(1.1); }
+        .calendar-controls h2 { font-size: 1.2rem; font-weight: 700; text-transform: capitalize; }
+
+        /* Grelha do Calendário */
+        .calendar { width: 100%; }
+        .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 700; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; }
+        .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+        
+        .day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.95rem; border-radius: 12px; transition: all 0.3s ease; border: 1.5px solid transparent; }
+        
+        /* Estados dos Dias */
+        .day.empty { background: transparent; pointer-events: none; }
+        .day.past { color: var(--color-grey); text-decoration: line-through; pointer-events: none; }
+        
+        /* As cores mágicas */
+        .day.green { background: var(--bg-green); color: var(--color-green); border-color: #A7F3D0; }
+        .day.yellow { background: var(--bg-yellow); color: var(--color-yellow); border-color: #FDE68A; }
+        .day.red { background: var(--bg-red); color: var(--color-red); border-color: #FECACA; opacity: 0.7; }
+
+        /* Botão de WhatsApp */
+        .btn-whatsapp { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px; margin-top: 2rem; background: var(--text-main); color: #FFF; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; text-decoration: none; transition: background 0.3s; }
+        .btn-whatsapp:hover { background: #000; }
+        .btn-whatsapp i { font-size: 1.2rem; color: var(--gold-primary); }
+
+        #loading { text-align: center; color: var(--gold-primary); margin: 2rem 0; font-weight: 600; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <img src="icone-app.png" alt="GlowUp Logo">
+            <h1>GlowUp Estética</h1>
+            <p>Verifica a nossa disponibilidade e agenda o teu momento.</p>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item"><div class="dot green"></div> Vagas</div>
+            <div class="legend-item"><div class="dot yellow"></div> Últimas</div>
+            <div class="legend-item"><div class="dot red"></div> Esgotado</div>
+        </div>
+
+        <div class="calendar-controls">
+            <button onclick="mudarMes(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+            <h2 id="mes-ano">Novembro 2023</h2>
+            <button onclick="mudarMes(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+        <div class="calendar">
+            <div class="weekdays">
+                <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+            </div>
+            <div id="loading"><i class="fa-solid fa-spinner fa-spin"></i> A atualizar agenda...</div>
+            <div class="days" id="dias-calendario">
+                </div>
+        </div>
+
+        <a href="https://wa.me/351900000000?text=Olá%20Mariana!%20Estive%20a%20ver%20o%20teu%20calendário%20e%20queria%20fazer%20uma%20marcação." target="_blank" class="btn-whatsapp">
+            <i class="fa-brands fa-whatsapp"></i> Pedir Marcação
+        </a>
+    </div>
+
+    <script>
+        // LIGAÇÃO AO TEU SUPABASE
+        const SUPABASE_URL = "https://bxqlqexumitvhzbuuhpj.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_3fQhn8sBTNDXEjpk3SAPXQ_UddrAIH6";
+        const supabaseDB = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let dataAtual = new Date();
+        let agendaDB = [];
+
+        // O Limite de marcações por dia que define o semáforo
+        // Podes ajustar estes números depois se a Mariana trabalhar mais ou menos horas
+        const LIMITE_AMARELO = 3; // A partir de 3 marcações, fica Amarelo
+        const LIMITE_VERMELHO = 6; // A partir de 6 marcações, fica Vermelho (Esgotado)
+
+        window.onload = async function() {
+            buscarAgenda();
+        };
+
+        async function buscarAgenda() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('dias-calendario').style.display = 'none';
+
+            // Vamos buscar APENAS as datas (sem nomes nem dados privados por segurança)
+            const { data, error } = await supabaseDB.from('agenda').select('dia');
+            
+            if (data) {
+                agendaDB = data;
+            }
+            
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('dias-calendario').style.display = 'grid';
+            renderCalendario();
+        }
+
+        function renderCalendario() {
+            const ano = dataAtual.getFullYear();
+            const mes = dataAtual.getMonth();
+
+            // Atualizar o título do mês
+            const nomeMes = dataAtual.toLocaleString('pt-PT', { month: 'long', year: 'numeric' });
+            document.getElementById('mes-ano').innerText = nomeMes;
+
+            // Lógica do calendário
+            const primeiroDia = new Date(ano, mes, 1).getDay(); // Que dia da semana começa o mês?
+            const totalDias = new Date(ano, mes + 1, 0).getDate(); // Quantos dias tem o mês?
+            
+            const grelha = document.getElementById('dias-calendario');
+            grelha.innerHTML = '';
+
+            const hoje = new Date();
+            hoje.setHours(0,0,0,0);
+
+            // Espaços vazios antes do dia 1
+            for (let i = 0; i < primeiroDia; i++) {
+                grelha.innerHTML += `<div class="day empty"></div>`;
+            }
+
+            // Preencher os dias do mês
+            for (let dia = 1; dia <= totalDias; dia++) {
+                const dataLoop = new Date(ano, mes, dia);
+                
+                // Formatar a data para ficar igual ao que está guardado no Supabase (YYYY-MM-DD)
+                const dataFormatada = `${ano}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+                
+                // Quantas marcações existem neste dia específico?
+                const marcacoesNesteDia = agendaDB.filter(m => m.dia === dataFormatada).length;
+
+                let classeCor = 'green'; // Por defeito, está livre
+                
+                if (dataLoop < hoje) {
+                    classeCor = 'past'; // Já passou
+                } else if (dataLoop.getDay() === 0) {
+                    // Se for Domingo (0), podemos assumir que está fechado (vermelho ou cinza)
+                    classeCor = 'past'; 
+                } else {
+                    // LÓGICA DO SEMÁFORO
+                    if (marcacoesNesteDia >= LIMITE_VERMELHO) {
+                        classeCor = 'red';
+                    } else if (marcacoesNesteDia >= LIMITE_AMARELO) {
+                        classeCor = 'yellow';
+                    }
+                }
+
+                grelha.innerHTML += `<div class="day ${classeCor}">${dia}</div>`;
+            }
+        }
+
+        function mudarMes(direcao) {
+            dataAtual.setMonth(dataAtual.getMonth() + direcao);
+            renderCalendario();
+        }
+    </script>
+</body>
+</html>
