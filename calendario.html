@@ -125,9 +125,9 @@
             document.getElementById('loading').style.display = 'block';
             document.getElementById('dias-calendario').style.display = 'none';
 
-            // Puxa a agenda e os dias de férias/bloqueados
+            // Puxa a agenda segura (apenas datas) e os dias de férias/bloqueados
             const [resAgenda, resFechados] = await Promise.all([
-                supabaseDB.from('vista_agenda_publica').select('dia'),
+                supabaseDB.from('agenda_publica').select('dia'),
                 supabaseDB.from('dias_fechados').select('dia')
             ]);
             
